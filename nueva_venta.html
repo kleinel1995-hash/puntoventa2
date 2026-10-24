@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -483,7 +484,8 @@ function mostrarProductos(lista){
 
       <input type="number"
              id="cantidadInput${i}"
-             value="1"
+             value=""
+             placeholder="Cantidad"
              min="1"
              max="${Number(p.stock)}"
              step="1"
@@ -508,7 +510,7 @@ function mostrarProductos(lista){
  });
 }
 
-/* NUEVA FUNCIÓN: SELECCIONAR ARTÍCULO */
+/* SELECCIONAR ARTÍCULO: INPUT EN BLANCO */
 function seleccionarProductoMovil(i,event){
  if(window.innerWidth>700){
   agregarProducto(i);
@@ -537,7 +539,7 @@ function seleccionarProductoMovil(i,event){
  tarjeta.classList.add("cantidad-abierta");
 
  input.max=Number(p.stock);
- input.value="1";
+ input.value="";
  input.setCustomValidity("");
 
  // Mantener visible la tarjeta seleccionada.
@@ -558,6 +560,7 @@ function validarCantidadMovil(i){
  const cantidadTexto=input.value;
  input.setCustomValidity("");
 
+ // Permitir que el campo permanezca vacío mientras se escribe.
  if(cantidadTexto==="")return;
 
  const cantidad=Number(cantidadTexto);
@@ -576,11 +579,21 @@ function cambiarCantidadMovil(i,cambio){
 
  if(!p||!input)return;
 
- let cantidad=parseInt(input.value,10);
+ let cantidad;
 
- if(!Number.isFinite(cantidad))cantidad=1;
+ // Si el campo está vacío, el primer toque en + o − coloca 1.
+ if(input.value.trim()===""){
+  cantidad=1;
+ }else{
+  cantidad=parseInt(input.value,10);
 
- cantidad+=cambio;
+  if(!Number.isFinite(cantidad)){
+   cantidad=1;
+  }else{
+   cantidad+=cambio;
+  }
+ }
+
  cantidad=Math.max(1,Math.min(Number(p.stock),cantidad));
 
  input.value=cantidad;
@@ -593,6 +606,14 @@ function confirmarCantidadMovil(i){
  const input=document.getElementById("cantidadInput"+i);
 
  if(!p||!input)return;
+
+ // No agregar si el usuario dejó el campo en blanco.
+ if(input.value.trim()===""){
+  input.setCustomValidity("Escribe la cantidad que deseas agregar.");
+  input.reportValidity();
+  input.focus();
+  return;
+ }
 
  const cantidad=Number(input.value);
 
