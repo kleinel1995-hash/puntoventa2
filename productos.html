@@ -106,8 +106,10 @@ button{cursor:pointer}
 }
 .product-row{
  min-height:76px;border-bottom:1px solid #f1f5f9;
- font-size:13px;font-weight:bold;color:#475569;min-width:780px
+ font-size:13px;font-weight:bold;color:#475569;min-width:780px;
+ cursor:pointer;transition:background .2s
 }
+.product-row:hover{background:#f8fbff}
 
 .codigo{color:var(--azul);overflow-wrap:anywhere}
 .stock-ok{color:var(--verde)}
@@ -234,7 +236,6 @@ button{cursor:pointer}
  .table{overflow:visible;width:100%}
  .header-row{display:none}
 
- /* TARJETAS MÓVILES */
  .product-row{
   min-width:0;width:100%;display:block;
   padding:15px;margin-bottom:12px;
@@ -242,6 +243,7 @@ button{cursor:pointer}
   border-radius:16px;box-shadow:0 3px 12px #0f172a08;
   font-size:13px
  }
+ .product-row:hover{background:white}
 
  .product-name{
   display:block;font-size:16px;font-weight:bold;
@@ -269,7 +271,6 @@ button{cursor:pointer}
 
  .meta-item.extra-mobile{display:none}
  .product-footer{display:none!important}
-
  .empty{background:white;border-radius:15px}
 
  /* MENÚ INFERIOR */
@@ -422,10 +423,7 @@ button{cursor:pointer}
  </a>
 </nav>
 
-<!-- NOTA: SE ELIMINÓ EL BOTÓN FLOTANTE "AGREGAR PRODUCTO".
-     EL BOTÓN AGREGAR DE LA PARTE SUPERIOR SIGUE FUNCIONANDO. -->
-
-<!-- MODAL PRODUCTO -->
+<!-- MODAL AGREGAR / EDITAR PRODUCTO -->
 <div class="modal" id="modalProducto">
  <div class="modal-box">
   <div class="modal-top">
@@ -465,7 +463,7 @@ button{cursor:pointer}
 
   <div class="modal-actions">
    <button class="cancel" onclick="cerrarModal()">Cancelar</button>
-   <button class="save" onclick="guardarProducto()">Guardar</button>
+   <button class="save" id="btnGuardar" onclick="guardarProducto()">Guardar</button>
   </div>
  </div>
 </div>
@@ -497,6 +495,7 @@ const imagenDefault="https://cdn-icons-png.flaticon.com/512/3081/3081559.png";
 const STORAGE_KEY="productosPOS";
 
 let productos=[];
+let indiceEditando=null;
 
 try{
  const datos=JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]");
@@ -603,6 +602,7 @@ function actualizarDepartamentos(){
  if(departamentos.includes(actual))select.value=actual;
 }
 
+/* MOSTRAR PRODUCTOS */
 function mostrarProductos(lista=productos){
  const contenedor=document.getElementById("listaProductos");
 
@@ -619,11 +619,20 @@ function mostrarProductos(lista=productos){
  }
 
  contenedor.innerHTML=lista.map(p=>{
+  const indice=productos.indexOf(p);
   const bajo=p.stock<=5;
 
   return `
-   <div class="product-row">
-    <div class="product-name">${escapar(p.nombre)}</div>
+   <div class="product-row"
+    onclick="editarProducto(${indice})"
+    role="button"
+    tabindex="0"
+    aria-label="Editar ${escapar(p.nombre)}"
+    onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();editarProducto(${indice})}">
+
+    <div class="product-name">
+     ${escapar(p.nombre)}
+    </div>
 
     <div class="desktop-field">
      ${escapar(p.departamento||"-")}
@@ -649,7 +658,6 @@ function mostrarProductos(lista=productos){
       <small>Costo</small>
       <strong>${formato(p.costo)}</strong>
      </div>
-
      <div class="meta-item">
       <small>Precio de venta</small>
       <strong class="price">${formato(p.precio)}</strong>
@@ -665,8 +673,12 @@ function refrescar(){
  aplicarFiltro();
 }
 
+/* FORMULARIO PARA PRODUCTO NUEVO */
 function abrirModal(){
+ indiceEditando=null;
+
  document.getElementById("tituloModal").textContent="Agregar producto";
+ document.getElementById("btnGuardar").textContent="Guardar";
 
  ["nombre","departamento","categoria","costo","precio","stock","codigo"]
  .forEach(id=>document.getElementById(id).value="");
@@ -681,10 +693,40 @@ function abrirModal(){
  },150);
 }
 
-function cerrarModal(){
- document.getElementById("modalProducto").classList.remove("active");
+/* ABRIR PRODUCTO PARA EDITAR TODOS SUS DATOS */
+function editarProducto(indice){
+ if(indice<0||indice>=productos.length)return;
+
+ const p=productos[indice];
+ indiceEditando=indice;
+
+ document.getElementById("tituloModal").textContent="Editar producto";
+ document.getElementById("btnGuardar").textContent="Guardar cambios";
+
+ document.getElementById("nombre").value=p.nombre;
+ document.getElementById("departamento").value=p.departamento;
+ document.getElementById("categoria").value=p.categoria;
+ document.getElementById("costo").value=p.costo;
+ document.getElementById("precio").value=p.precio;
+ document.getElementById("stock").value=p.stock;
+ document.getElementById("codigo").value=p.codigo;
+
+ cargarCategorias();
+ actualizarDepartamentos();
+
+ document.getElementById("modalProducto").classList.add("active");
+
+ setTimeout(()=>{
+  document.getElementById("nombre").focus();
+ },150);
 }
 
+function cerrarModal(){
+ document.getElementById("modalProducto").classList.remove("active");
+ indiceEditando=null;
+}
+
+/* GUARDAR PRODUCTO NUEVO O CAMBIOS */
 function guardarProducto(){
  const nombre=document.getElementById("nombre").value.trim();
  const departamento=document.getElementById("departamento").value.trim();
@@ -711,7 +753,9 @@ function guardarProducto(){
   return;
  }
 
- const existe=productos.some(p=>
+ /* No permitir que otro producto use el mismo código */
+ const existe=productos.some((p,i)=>
+  i!==indiceEditando &&
   String(p.codigo).trim().toLowerCase()===codigo.toLowerCase()
  );
 
@@ -722,24 +766,56 @@ function guardarProducto(){
   return;
  }
 
- const producto={
-  nombre,departamento,categoria,costo,precio,stock,codigo,
-  img:imagenDefault
- };
+ if(indiceEditando!==null){
+  /* ACTUALIZAR PRODUCTO EXISTENTE */
+  const anterior=productos[indiceEditando];
 
- productos.push(producto);
+  const actualizado={
+   ...anterior,
+   nombre,
+   departamento,
+   categoria,
+   costo,
+   precio,
+   stock,
+   codigo,
+   img:anterior.img||imagenDefault
+  };
 
- if(!guardarLocal()){
-  productos.pop();
-  return;
+  const respaldo=productos[indiceEditando];
+  productos[indiceEditando]=actualizado;
+
+  if(!guardarLocal()){
+   productos[indiceEditando]=respaldo;
+   return;
+  }
+
+  cerrarModal();
+  refrescar();
+
+  alerta("Cambios guardados","El producto fue actualizado correctamente.");
+ }else{
+  /* AGREGAR PRODUCTO NUEVO */
+  const producto={
+   nombre,departamento,categoria,costo,precio,stock,codigo,
+   img:imagenDefault
+  };
+
+  productos.push(producto);
+
+  if(!guardarLocal()){
+   productos.pop();
+   return;
+  }
+
+  cerrarModal();
+  refrescar();
+
+  alerta("Producto guardado","El producto fue agregado correctamente.");
  }
-
- refrescar();
- cerrarModal();
-
- alerta("Producto guardado","El producto fue agregado correctamente.");
 }
 
+/* BÚSQUEDA Y FILTROS */
 function aplicarFiltro(){
  const texto=document.getElementById("buscar").value.trim().toLowerCase();
  const categoria=document.getElementById("filtroCategoria").value;
