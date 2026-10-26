@@ -177,7 +177,7 @@ button{cursor:pointer}
  margin-bottom:14px;text-align:center
 }
 
-.mobile-bottom,.fab{display:none}
+.mobile-bottom{display:none}
 
 /* TABLET */
 @media(min-width:701px) and (max-width:1000px){
@@ -234,7 +234,7 @@ button{cursor:pointer}
  .table{overflow:visible;width:100%}
  .header-row{display:none}
 
- /* TARJETAS MÓVILES: SOLO NOMBRE, COSTO Y PRECIO */
+ /* TARJETAS MÓVILES */
  .product-row{
   min-width:0;width:100%;display:block;
   padding:15px;margin-bottom:12px;
@@ -267,10 +267,7 @@ button{cursor:pointer}
  }
  .meta-item strong.price{color:var(--azul);font-size:15px}
 
- /* Ocultar departamento, categoría y stock en las tarjetas */
  .meta-item.extra-mobile{display:none}
-
- /* Código y pie ocultos en las tarjetas */
  .product-footer{display:none!important}
 
  .empty{background:white;border-radius:15px}
@@ -300,17 +297,7 @@ button{cursor:pointer}
   background:#eaf3ff;padding:5px 12px;border-radius:10px
  }
 
- /* BOTÓN FLOTANTE */
- .fab{
-  display:flex;align-items:center;justify-content:center;gap:8px;
-  position:fixed;right:14px;
-  bottom:calc(82px + env(safe-area-inset-bottom));
-  z-index:1500;padding:14px 17px;border:0;
-  border-radius:14px;background:var(--azul);color:white;
-  font-size:14px;font-weight:bold;
-  box-shadow:0 6px 18px #0b7cff45
- }
-
+ /* MODALES MÓVILES */
  .modal{padding:10px}
  .modal-box{
   width:100%;max-width:540px;max-height:88dvh;
@@ -324,7 +311,7 @@ button{cursor:pointer}
 }
 
 @media(min-width:701px){
- .mobile-bottom,.fab{display:none!important}
+ .mobile-bottom{display:none!important}
 }
 </style>
 </head>
@@ -435,10 +422,8 @@ button{cursor:pointer}
  </a>
 </nav>
 
-<!-- BOTÓN AGREGAR MÓVIL -->
-<button class="fab" onclick="abrirModal()">
- <i class="fa-solid fa-plus"></i> Agregar producto
-</button>
+<!-- NOTA: SE ELIMINÓ EL BOTÓN FLOTANTE "AGREGAR PRODUCTO".
+     EL BOTÓN AGREGAR DE LA PARTE SUPERIOR SIGUE FUNCIONANDO. -->
 
 <!-- MODAL PRODUCTO -->
 <div class="modal" id="modalProducto">
@@ -512,6 +497,7 @@ const imagenDefault="https://cdn-icons-png.flaticon.com/512/3081/3081559.png";
 const STORAGE_KEY="productosPOS";
 
 let productos=[];
+
 try{
  const datos=JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]");
  productos=Array.isArray(datos)?datos:[];
