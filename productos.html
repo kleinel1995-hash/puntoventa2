@@ -14,12 +14,16 @@
 body{background:var(--fondo);color:var(--texto);overflow:hidden}
 button,input,select{font:inherit}button{cursor:pointer}
 .header{position:fixed;top:0;left:0;right:0;height:75px;background:#fff;border-bottom:1px solid var(--linea);display:flex;align-items:center;justify-content:space-between;padding:0 25px;z-index:1000}
-.header-left{display:flex;align-items:center;gap:18px}.header-left i{font-size:25px;color:var(--azul)}.header h1{font-size:28px}.header-right{display:flex;align-items:center;gap:15px}
+.header-left{display:flex;align-items:center;gap:14px}.header h1{font-size:28px}.header-right{display:flex;align-items:center;gap:15px}
+.menu-toggle{width:44px;height:44px;border:0;border-radius:12px;background:#eef5ff;color:var(--azul);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.menu-toggle i{font-size:22px}
 .btn-header{height:48px;border:0;border-radius:12px;background:var(--azul);color:white;padding:0 20px;font-weight:bold;font-size:16px}
-.sidebar{position:fixed;top:75px;left:0;bottom:0;width:230px;background:#fff;border-right:1px solid var(--linea);padding:22px 12px;z-index:900;overflow-y:auto}
+.sidebar{position:fixed;top:75px;left:0;bottom:0;width:230px;background:#fff;border-right:1px solid var(--linea);padding:22px 12px;z-index:950;overflow-y:auto;transition:transform .25s ease,visibility .25s ease}
 .menu-item{display:flex;align-items:center;gap:13px;padding:14px 15px;border-radius:12px;margin-bottom:8px;font-size:14px;font-weight:700;color:#334155;cursor:pointer;transition:.2s}
 .menu-item:hover{background:#eef5ff;color:var(--azul)}.menu-item i{font-size:18px;width:22px;text-align:center}.menu-item.active{background:var(--azul);color:white;box-shadow:0 8px 16px #0b7cff38}.config-separator{margin-top:30px;border-top:1px solid var(--linea);padding-top:18px}
-.content{position:fixed;top:75px;left:230px;right:0;bottom:0;overflow-y:auto;padding:25px}
+.menu-overlay{position:fixed;inset:0;background:#0f172a80;z-index:900;display:none}.menu-overlay.active{display:block}
+.content{position:fixed;top:75px;left:230px;right:0;bottom:0;overflow-y:auto;padding:25px;transition:left .25s ease}
+body.menu-cerrado .sidebar{transform:translateX(-105%)}body.menu-cerrado .content{left:0}
 .card{background:white;border-radius:24px;padding:25px;box-shadow:0 8px 25px #0000000a}
 .search-box{height:60px;border:1px solid var(--linea);border-radius:15px;display:flex;align-items:center;padding:0 17px;gap:13px;margin-bottom:18px}
 .search-box>i{font-size:20px;color:var(--gris)}.search-box .barcode-search{cursor:pointer;color:var(--azul)}.search-box input{width:100%;min-width:0;height:100%;border:0;outline:none;font-size:17px}
@@ -27,8 +31,7 @@ button,input,select{font:inherit}button{cursor:pointer}
 .table{width:100%;overflow-x:auto}.header-row,.product-row{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:12px;align-items:center}
 .header-row{padding:17px 0;border-bottom:1px solid var(--linea);font-size:13px;font-weight:bold;min-width:600px}
 .product-row{min-height:76px;border-bottom:1px solid #f1f5f9;font-size:13px;font-weight:bold;color:#475569;min-width:600px;cursor:pointer;transition:background .2s}
-.product-row:hover{background:#f0f7ff}.product-name{display:block}.codigo{color:var(--azul);overflow-wrap:anywhere}.desktop-field{display:block}
-.product-meta{display:none}
+.product-row:hover{background:#f0f7ff}.product-name{display:block}.codigo{color:var(--azul);overflow-wrap:anywhere}.desktop-field{display:block}.product-meta{display:none}
 .empty{padding:30px 15px;text-align:center;color:var(--gris);background:white;border-radius:12px}.empty i{font-size:32px;display:block;margin-bottom:12px}
 .modal{position:fixed;inset:0;background:#0f172a99;display:none;align-items:center;justify-content:center;z-index:3000;padding:15px}.modal.active{display:flex}
 .modal-box{background:white;width:95%;max-width:540px;max-height:90vh;overflow-y:auto;border-radius:22px;padding:25px;box-shadow:0 20px 60px #0003}
@@ -46,16 +49,17 @@ button,input,select{font:inherit}button{cursor:pointer}
 .detail-name{font-size:24px;font-weight:bold;color:var(--texto);overflow-wrap:anywhere;line-height:1.3;margin-bottom:8px}.detail-subtitle{font-size:13px;color:var(--gris);margin-bottom:20px}
 .detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.detail-item{min-width:0;padding:14px;background:#f8fafc;border:1px solid #edf0f5;border-radius:13px}
 .detail-item small{display:block;color:var(--gris);font-size:12px;margin-bottom:7px}.detail-item strong{display:block;font-size:15px;color:var(--texto);overflow-wrap:anywhere;line-height:1.4}
-.detail-item .detail-price{color:var(--azul);font-size:18px}.detail-item .detail-code{color:var(--azul)}
-.detail-item .detail-gain{color:var(--verde);font-size:18px}
+.detail-item .detail-price{color:var(--azul);font-size:18px}.detail-item .detail-code{color:var(--azul)}.detail-item .detail-gain{color:var(--verde);font-size:18px}
 .btn-edit-detail{width:100%;height:51px;margin-top:18px;border:0;border-radius:12px;background:var(--azul);color:white;font-weight:bold;font-size:16px}.btn-edit-detail i{margin-right:7px}
-.mobile-bottom{display:none}
-@media(min-width:701px) and (max-width:1000px){.sidebar{width:80px;padding:18px 8px}.menu-item{justify-content:center;padding:15px 5px}.menu-item span{display:none}.content{left:80px;padding:18px}.header{padding:0 18px}.header h1{font-size:23px}.header-row,.product-row{min-width:600px}}
+@media(min-width:701px) and (max-width:1000px){.sidebar{width:80px;padding:18px 8px}.menu-item{justify-content:center;padding:15px 5px}.menu-item span{display:none}.content{left:80px;padding:18px}.header{padding:0 18px}.header h1{font-size:23px}.header-row,.product-row{min-width:600px}body.menu-cerrado .content{left:0}}
 @media(max-width:700px){
- body{overflow-x:hidden;overflow-y:auto;padding-bottom:calc(82px + env(safe-area-inset-bottom))}
- .header{height:62px;padding:0 14px}.header-left{gap:10px}.header-left i{font-size:20px}.header h1{font-size:21px}
- .btn-header{height:40px;width:42px;padding:0;font-size:16px;border-radius:11px}.btn-header span{display:none}.sidebar{display:none!important}
- .content{position:relative;top:62px;left:0;right:auto;bottom:auto;width:100%;padding:12px 11px 30px;overflow:visible}
+ body{overflow-x:hidden;overflow-y:auto}
+ .header{height:62px;padding:0 14px}.header-left{gap:10px}.header h1{font-size:21px}
+ .menu-toggle{width:40px;height:40px}.menu-toggle i{font-size:20px}
+ .btn-header{height:40px;width:42px;padding:0;font-size:16px;border-radius:11px}.btn-header span{display:none}
+ .sidebar{display:block!important;top:62px;left:0;bottom:0;width:270px;max-width:85vw;padding:18px 12px;z-index:950;transform:translateX(-105%);visibility:hidden;box-shadow:8px 0 25px #00000012}
+ .sidebar.menu-visible{transform:translateX(0);visibility:visible}
+ .content{position:relative;top:62px;left:0!important;right:auto;bottom:auto;width:100%;padding:12px 11px 30px;overflow:visible}
  .card{padding:0;background:transparent;box-shadow:none;border-radius:0}
  .search-box{height:48px;background:white;padding:0 12px;gap:9px;border-radius:13px;margin-bottom:12px}.search-box>i{font-size:16px}.search-box input{font-size:14px}
  .filters{grid-template-columns:1fr;gap:8px;margin-bottom:15px}.filters select{height:42px;padding:0 9px;font-size:12px;border-radius:10px;min-width:0}
@@ -66,22 +70,22 @@ button,input,select{font:inherit}button{cursor:pointer}
  .meta-item{min-width:0}.meta-item small{display:block;font-size:11px;color:var(--gris);font-weight:normal;margin-bottom:5px}
  .meta-item strong{display:block;font-size:13px;color:#334155;overflow-wrap:anywhere;line-height:1.4}.meta-item strong.price{color:var(--azul);font-size:15px}
  .empty{background:white;border-radius:15px}
- .mobile-bottom{position:fixed;left:0;right:0;bottom:0;z-index:2000;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));height:calc(68px + env(safe-area-inset-bottom));padding:6px 3px calc(6px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--linea);box-shadow:0 -4px 16px #0f172a0c}
- .mobile-bottom a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-width:0;text-decoration:none;color:#64748b;font-size:10px;font-weight:bold}
- .mobile-bottom a i{font-size:18px}.mobile-bottom a span{display:block;white-space:nowrap;font-size:9px}.mobile-bottom a.active{color:var(--azul)}.mobile-bottom a.active i{background:#eaf3ff;padding:5px 12px;border-radius:10px}
  .modal{padding:10px}.modal-box{width:100%;max-width:540px;max-height:88dvh;padding:18px;border-radius:19px}.modal-box h2{font-size:21px}
  .modal-box input,.modal-box select{height:47px;font-size:16px}.modal-actions{gap:9px}.modal-actions button{height:47px;font-size:14px}#reader{min-height:220px}
  .detail-box{max-width:540px}.detail-image{height:150px;margin-bottom:15px}.detail-name{font-size:21px}.detail-grid{gap:9px}.detail-item{padding:12px 10px}.detail-item small{font-size:11px}.detail-item strong{font-size:14px}.detail-item .detail-price,.detail-item .detail-gain{font-size:16px}.btn-edit-detail{height:48px}
 }
-@media(min-width:701px){.mobile-bottom{display:none!important}}
 </style>
 </head>
 <body>
 <header class="header">
- <div class="header-left"><i class="fa-solid fa-boxes-stacked"></i><h1>Productos</h1></div>
+ <div class="header-left">
+  <button class="menu-toggle" onclick="toggleMenu()" aria-label="Abrir menú" aria-expanded="false"><i class="fa-solid fa-bars" id="menuIcon"></i></button>
+  <h1>Productos</h1>
+ </div>
  <div class="header-right"><button class="btn-header" onclick="abrirModal()"><i class="fa-solid fa-plus"></i><span> Agregar</span></button></div>
 </header>
-<aside class="sidebar">
+<div class="menu-overlay" id="menuOverlay" onclick="toggleMenu(false)"></div>
+<aside class="sidebar" id="sidebar">
  <div class="menu-item" onclick="irA('nueva_venta.html')"><i class="fa-solid fa-cart-shopping"></i><span>Nueva venta</span></div>
  <div class="menu-item" onclick="irA('dashboard.html')"><i class="fa-solid fa-chart-line"></i><span>Dashboard</span></div>
  <div class="menu-item active" onclick="irA('productos.html')"><i class="fa-solid fa-box"></i><span>Productos</span></div>
@@ -101,13 +105,7 @@ button,input,select{font:inherit}button{cursor:pointer}
   <div id="listaProductos"></div>
  </div>
 </div></main>
-<nav class="mobile-bottom">
- <a href="nueva_venta.html"><i class="fa-solid fa-cart-shopping"></i><span>Nueva venta</span></a>
- <a href="dashboard.html"><i class="fa-solid fa-chart-line"></i><span>Dashboard</span></a>
- <a href="productos.html" class="active"><i class="fa-solid fa-box"></i><span>Productos</span></a>
- <a href="inventario.html"><i class="fa-solid fa-warehouse"></i><span>Inventario</span></a>
- <a href="clientes.html"><i class="fa-solid fa-users"></i><span>Clientes</span></a>
-</nav>
+
 <div class="modal" id="modalDetalle"><div class="modal-box detail-box">
  <div class="modal-top"><h2>Detalles del producto</h2><button class="close-btn" onclick="cerrarDetalle()" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button></div>
  <img id="detalleImagen" class="detail-image" src="" alt="Imagen del producto" onerror="this.onerror=null;this.src='https://cdn-icons-png.flaticon.com/512/3081/3081559.png'">
@@ -144,10 +142,22 @@ const STORAGE_KEY="productosPOS";
 let productos=[],indiceEditando=null,indiceDetalle=null;
 try{const datos=JSON.parse(localStorage.getItem(STORAGE_KEY)||"[]");productos=Array.isArray(datos)?datos:[]}catch(error){productos=[]}
 productos=productos.map(p=>{
- const {categoria, ...resto}=p||{};
- const costo=Number(resto.costo)||0, precio=Number(resto.precio)||0;
+ const {categoria,...resto}=p||{};
+ const costo=Number(resto.costo)||0,precio=Number(resto.precio)||0;
  return {...resto,nombre:String(resto.nombre||""),departamento:String(resto.departamento||""),costo,precio,mayorista:Number(resto.mayorista??resto.precioMayorista)||0,codigo:String(resto.codigo||""),img:resto.img||imagenDefault};
 });
+function toggleMenu(forzarEstado){
+ const sidebar=document.getElementById("sidebar"),overlay=document.getElementById("menuOverlay"),icono=document.getElementById("menuIcon"),boton=document.querySelector(".menu-toggle");
+ if(window.innerWidth<=700){
+  const abrir=typeof forzarEstado==="boolean"?forzarEstado:!sidebar.classList.contains("menu-visible");
+  sidebar.classList.toggle("menu-visible",abrir);overlay.classList.toggle("active",abrir);
+  icono.className=abrir?"fa-solid fa-xmark":"fa-solid fa-bars";boton.setAttribute("aria-expanded",String(abrir));
+ }else{
+  const abrir=typeof forzarEstado==="boolean"?forzarEstado:document.body.classList.contains("menu-cerrado");
+  document.body.classList.toggle("menu-cerrado",!abrir);
+  icono.className=abrir?"fa-solid fa-bars":"fa-solid fa-bars";
+ }
+}
 function irA(pagina){location.href=pagina}
 function alerta(titulo,texto,icono="success"){Swal.fire({title:titulo,text:texto,icon:icono,confirmButtonColor:"#0b7cff"})}
 function formato(valor){return "RD$ "+Number(valor||0).toLocaleString("es-DO",{minimumFractionDigits:2,maximumFractionDigits:2})}
@@ -174,10 +184,7 @@ function mostrarProductos(lista=productos){
    <div class="desktop-field">${escapar(p.departamento||"-")}</div>
    <div class="desktop-field">${formato(p.costo)}</div>
    <div class="desktop-field">${formato(p.precio)}</div>
-   <div class="product-meta">
-    <div class="meta-item"><small>Costo</small><strong>${formato(p.costo)}</strong></div>
-    <div class="meta-item"><small>Precio</small><strong class="price">${formato(p.precio)}</strong></div>
-   </div>
+   <div class="product-meta"><div class="meta-item"><small>Costo</small><strong>${formato(p.costo)}</strong></div><div class="meta-item"><small>Precio</small><strong class="price">${formato(p.precio)}</strong></div></div>
   </div>`;
  }).join("");
 }
@@ -188,17 +195,13 @@ function abrirDetalle(indice){
  document.getElementById("detalleCosto").textContent=formato(p.costo);document.getElementById("detallePrecio").textContent=formato(p.precio);
  document.getElementById("detalleMayorista").textContent=formato(p.mayorista);
  document.getElementById("detalleGanancia").textContent=porcentajeGanancia(p.costo,p.precio).toLocaleString("es-DO",{minimumFractionDigits:2,maximumFractionDigits:2})+"%";
- document.getElementById("detalleCodigo").textContent=p.codigo||"-";
- document.getElementById("modalDetalle").classList.add("active");
+ document.getElementById("detalleCodigo").textContent=p.codigo||"-";document.getElementById("modalDetalle").classList.add("active");
 }
 function cerrarDetalle(){document.getElementById("modalDetalle").classList.remove("active");indiceDetalle=null}
 function editarDesdeDetalle(){if(indiceDetalle===null)return;const indice=indiceDetalle;cerrarDetalle();editarProducto(indice)}
 function refrescar(){actualizarDepartamentos();aplicarFiltro()}
 function limpiarFormulario(){["nombre","departamento","costo","precio","mayorista","codigo"].forEach(id=>document.getElementById(id).value="");actualizarGanancia()}
-function abrirModal(){
- indiceEditando=null;document.getElementById("tituloModal").textContent="Agregar producto";document.getElementById("btnGuardar").textContent="Guardar";limpiarFormulario();
- document.getElementById("modalProducto").classList.add("active");setTimeout(()=>document.getElementById("nombre").focus(),150)
-}
+function abrirModal(){indiceEditando=null;document.getElementById("tituloModal").textContent="Agregar producto";document.getElementById("btnGuardar").textContent="Guardar";limpiarFormulario();document.getElementById("modalProducto").classList.add("active");setTimeout(()=>document.getElementById("nombre").focus(),150)}
 function editarProducto(indice){
  if(indice<0||indice>=productos.length)return;const p=productos[indice];indiceEditando=indice;
  document.getElementById("tituloModal").textContent="Editar producto";document.getElementById("btnGuardar").textContent="Guardar cambios";
@@ -211,24 +214,13 @@ function guardarProducto(ignorarAvisoMayorista=false){
  const nombre=document.getElementById("nombre").value.trim(),departamento=document.getElementById("departamento").value.trim();
  const costoTexto=document.getElementById("costo").value.trim(),precioTexto=document.getElementById("precio").value.trim(),mayoristaTexto=document.getElementById("mayorista").value.trim(),codigo=document.getElementById("codigo").value.trim();
  const costo=Number(costoTexto),precio=Number(precioTexto),mayorista=Number(mayoristaTexto);
- if(!nombre||!departamento||!codigo||costoTexto===""||precioTexto===""||mayoristaTexto===""||![costo,precio,mayorista].every(Number.isFinite)||costo<0||precio<=0||mayorista<0){
-  alerta("Campos incompletos","Completa todos los campos. El costo y el precio mayorista no pueden ser negativos y el precio al detalle debe ser mayor que cero.","warning");return
- }
- if(mayorista>precio&&!ignorarAvisoMayorista){
-  Swal.fire({title:"Revisa el precio mayorista",text:"El precio mayorista es mayor que el precio al detalle. ¿Deseas guardar de todos modos?",icon:"warning",showCancelButton:true,confirmButtonText:"Guardar de todos modos",cancelButtonText:"Revisar",confirmButtonColor:"#0b7cff"}).then(r=>{if(r.isConfirmed)guardarProducto(true)});
-  return;
- }
+ if(!nombre||!departamento||!codigo||costoTexto===""||precioTexto===""||mayoristaTexto===""||![costo,precio,mayorista].every(Number.isFinite)||costo<0||precio<=0||mayorista<0){alerta("Campos incompletos","Completa todos los campos. El costo y el precio mayorista no pueden ser negativos y el precio al detalle debe ser mayor que cero.","warning");return}
+ if(mayorista>precio&&!ignorarAvisoMayorista){Swal.fire({title:"Revisa el precio mayorista",text:"El precio mayorista es mayor que el precio al detalle. ¿Deseas guardar de todos modos?",icon:"warning",showCancelButton:true,confirmButtonText:"Guardar de todos modos",cancelButtonText:"Revisar",confirmButtonColor:"#0b7cff"}).then(r=>{if(r.isConfirmed)guardarProducto(true)});return}
  const existe=productos.some((p,i)=>i!==indiceEditando&&String(p.codigo).trim().toLowerCase()===codigo.toLowerCase());
  if(existe){alerta("Código repetido","Este código de barras ya existe en otro producto.","error");return}
  const producto={nombre,departamento,costo,precio,mayorista,codigo,img:indiceEditando!==null?(productos[indiceEditando].img||imagenDefault):imagenDefault};
- if(indiceEditando!==null){
-  const respaldo=productos[indiceEditando];productos[indiceEditando]=producto;
-  if(!guardarLocal()){productos[indiceEditando]=respaldo;return}
-  cerrarModal();refrescar();alerta("Cambios guardados","El producto fue actualizado correctamente.")
- }else{
-  productos.push(producto);if(!guardarLocal()){productos.pop();return}
-  cerrarModal();refrescar();alerta("Producto guardado","El producto fue agregado correctamente.")
- }
+ if(indiceEditando!==null){const respaldo=productos[indiceEditando];productos[indiceEditando]=producto;if(!guardarLocal()){productos[indiceEditando]=respaldo;return}cerrarModal();refrescar();alerta("Cambios guardados","El producto fue actualizado correctamente.")}
+ else{productos.push(producto);if(!guardarLocal()){productos.pop();return}cerrarModal();refrescar();alerta("Producto guardado","El producto fue agregado correctamente.")}
 }
 function aplicarFiltro(){
  const texto=document.getElementById("buscar").value.trim().toLowerCase(),departamento=document.getElementById("filtroDepartamento").value;
@@ -268,7 +260,9 @@ function codigoManual(){
 document.getElementById("modalDetalle").addEventListener("click",e=>{if(e.target.id==="modalDetalle")cerrarDetalle()});
 document.getElementById("modalProducto").addEventListener("click",e=>{if(e.target.id==="modalProducto")cerrarModal()});
 document.getElementById("scannerModal").addEventListener("click",e=>{if(e.target.id==="scannerModal")cerrarScanner()});
-document.addEventListener("keydown",e=>{if(e.key==="Escape"){cerrarDetalle();cerrarModal();cerrarScanner()}});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){cerrarDetalle();cerrarModal();cerrarScanner();toggleMenu(false)}});
+document.querySelectorAll(".sidebar .menu-item").forEach(item=>item.addEventListener("click",()=>{if(window.innerWidth<=700)toggleMenu(false)}));
+window.addEventListener("resize",()=>{if(window.innerWidth>700){document.getElementById("menuOverlay").classList.remove("active");document.getElementById("sidebar").classList.remove("menu-visible");document.getElementById("menuIcon").className="fa-solid fa-bars";document.querySelector(".menu-toggle").setAttribute("aria-expanded","false")}});
 refrescar();
 </script>
 </body>
