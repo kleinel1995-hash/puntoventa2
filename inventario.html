@@ -7,1573 +7,1306 @@
 <meta name="theme-color" content="#f3f6fb">
 <title>Inventario</title>
 
-<link rel="stylesheet"
- href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
-:root {
-  --primary: #2563eb;
-  --primary-dark: #1d4ed8;
-  --background: #f3f6fb;
-  --white: #ffffff;
-  --text: #172033;
-  --muted: #64748b;
-  --border: #e2e8f0;
-  --success: #15803d;
-  --danger: #dc2626;
-  --warning: #d97706;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  background: var(--background);
-  color: var(--text);
-}
-
-button, input, select {
-  font: inherit;
-}
-
-button {
-  cursor: pointer;
-}
-
-.app {
-  display: flex;
-  min-height: 100vh;
-}
-
-/* BARRA LATERAL */
-
-.sidebar {
-  width: 245px;
-  background: #111827;
-  color: white;
-  padding: 22px 14px;
-  flex-shrink: 0;
-}
-
-.logo {
-  font-size: 23px;
-  font-weight: 800;
-  padding: 8px 12px 26px;
-}
-
-.logo i {
-  color: #60a5fa;
-  margin-right: 8px;
-}
-
-.menu-label {
-  color: #94a3b8;
-  font-size: 11px;
-  padding: 10px 12px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.menu a {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px;
-  margin: 4px 0;
-  border-radius: 9px;
-  color: #d1d5db;
-  text-decoration: none;
-  font-size: 14px;
-}
-
-.menu a:hover,
-.menu a.active {
-  background: #2563eb;
-  color: white;
-}
-
-.menu a i {
-  width: 18px;
-  text-align: center;
-}
-
-/* CONTENIDO */
-
-.main {
-  flex: 1;
-  min-width: 0;
-}
-
-.topbar {
-  height: 68px;
-  background: white;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 25px;
-}
-
-.topbar-title {
-  font-weight: 700;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+
+:root{
+    --azul:#0b7cff;
+    --verde:#16a34a;
+    --rojo:#ef4444;
+    --fondo:#f3f6fb;
+    --texto:#0f172a;
+    --gris:#64748b;
+    --linea:#e5e7eb;
+}
+
+body{
+    background:var(--fondo);
+    color:var(--texto);
+    overflow:hidden;
+}
+
+button,input,select{font:inherit}
+button{cursor:pointer}
+
+.header{
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    height:75px;
+    background:#fff;
+    border-bottom:1px solid var(--linea);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 25px;
+    z-index:1000;
+}
+
+.header-left{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+.header h1{font-size:28px}
 
-.user {
-  color: var(--muted);
-  font-size: 13px;
+.menu-toggle{
+    width:44px;
+    height:44px;
+    border:0;
+    border-radius:12px;
+    background:#eef5ff;
+    color:var(--azul);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
 }
 
-.content {
-  padding: 24px;
-  max-width: 1500px;
-  margin: auto;
-}
-
-.page-heading {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 14px;
-  flex-wrap: wrap;
-  margin-bottom: 22px;
-}
-
-.page-heading h1 {
-  margin: 0 0 6px;
-  font-size: 26px;
-}
-
-.page-heading p {
-  margin: 0;
-  color: var(--muted);
-  font-size: 14px;
-}
+.menu-toggle i{font-size:22px}
+
+.header-actions{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
 
-.actions {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
+.btn{
+    min-height:44px;
+    padding:0 16px;
+    border:0;
+    border-radius:12px;
+    font-size:14px;
+    font-weight:bold;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
 }
+
+.btn-add{
+    background:var(--azul);
+    color:white;
+}
 
-.btn {
-  border: 0;
-  border-radius: 8px;
-  padding: 11px 15px;
-  display: inline-flex;
-  gap: 8px;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  font-size: 13px;
-}
+.btn-add:hover{background:#0869db}
 
-.btn-primary {
-  color: white;
-  background: var(--primary);
+.btn-descargar{
+    background:var(--verde);
+    color:white;
 }
+
+.btn-descargar:hover{background:#15803d}
 
-.btn-primary:hover {
-  background: var(--primary-dark);
+.sidebar{
+    position:fixed;
+    top:75px;
+    left:0;
+    bottom:0;
+    width:230px;
+    background:white;
+    border-right:1px solid var(--linea);
+    padding:22px 12px;
+    z-index:950;
+    overflow-y:auto;
+    transition:transform .25s ease;
 }
 
-.btn-light {
-  background: white;
-  color: var(--text);
-  border: 1px solid var(--border);
+.menu-item{
+    display:flex;
+    align-items:center;
+    gap:13px;
+    padding:14px 15px;
+    border-radius:12px;
+    margin-bottom:8px;
+    font-size:14px;
+    font-weight:700;
+    color:#334155;
+    cursor:pointer;
+    transition:.2s;
 }
 
-.btn-danger {
-  background: #fee2e2;
-  color: #b91c1c;
+.menu-item:hover{
+    background:#eef5ff;
+    color:var(--azul);
 }
 
-/* TARJETAS */
+.menu-item i{
+    font-size:18px;
+    width:22px;
+    text-align:center;
+}
 
-.stats {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 15px;
-  margin-bottom: 22px;
+.menu-item.active{
+    background:var(--azul);
+    color:white;
+    box-shadow:0 8px 16px #0b7cff38;
 }
 
-.stat-card {
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 18px;
-}
+.config-separator{
+    margin-top:30px;
+    border-top:1px solid var(--linea);
+    padding-top:18px;
+}
+
+.menu-overlay{
+    position:fixed;
+    inset:0;
+    background:#0f172a80;
+    z-index:900;
+    display:none;
+}
+
+.menu-overlay.active{display:block}
 
-.stat-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: var(--muted);
-  font-size: 13px;
-  gap: 8px;
+.content{
+    position:fixed;
+    top:75px;
+    left:230px;
+    right:0;
+    bottom:0;
+    overflow-y:auto;
+    padding:25px;
+    transition:left .25s ease;
 }
 
-.stat-icon {
-  width: 38px;
-  height: 38px;
-  border-radius: 10px;
-  display: grid;
-  place-items: center;
-  background: #dbeafe;
-  color: var(--primary);
-}
+body.menu-cerrado .sidebar{transform:translateX(-105%)}
+body.menu-cerrado .content{left:0}
 
-.stat-value {
-  font-size: 25px;
-  font-weight: 800;
-  margin-top: 13px;
+.card{
+    background:white;
+    border-radius:24px;
+    padding:28px;
+    box-shadow:0 8px 25px #0000000a;
 }
 
-.stat-description {
-  color: var(--muted);
-  font-size: 12px;
-  margin-top: 5px;
+.top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+    gap:15px;
 }
 
-/* TABLA */
+.top h2{font-size:30px}
 
-.panel {
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  overflow: visible;
+.top-actions{
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    gap:10px;
+    flex-wrap:wrap;
 }
 
-.panel-header {
-  padding: 18px;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 15px;
-  flex-wrap: wrap;
+.search-box{
+    height:44px;
+    width:300px;
+    max-width:100%;
+    border:1px solid var(--linea);
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:0 12px;
+    background:white;
 }
 
-.panel-header h2 {
-  margin: 0;
-  font-size: 17px;
+.search-box input{
+    width:100%;
+    min-width:0;
+    height:100%;
+    border:none;
+    outline:none;
+    font-size:14px;
 }
 
-.filters {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
+.search-box i{
+    color:var(--gris);
+    font-size:16px;
 }
 
-.field-control {
-  min-height: 39px;
-  padding: 9px 11px;
-  border: 1px solid #cbd5e1;
-  border-radius: 8px;
-  background: white;
-  outline: none;
-  width: 100%;
+/* INDICADORES FIJOS */
+.stats-sticky{
+    position:sticky;
+    top:0;
+    z-index:100;
+    background:var(--fondo);
+    padding:10px 0 14px;
+    margin-top:-5px;
+    margin-bottom:15px;
 }
 
-.field-control:focus {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px #2563eb1a;
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:14px;
 }
 
-.search-input {
-  min-width: 220px;
+.stat{
+    border:1px solid var(--linea);
+    border-radius:16px;
+    padding:17px;
+    background:#fff;
+    min-width:0;
+    box-shadow:0 4px 12px #00000006;
+    transition:background .2s,border-color .2s;
 }
 
-.table-wrap {
-  width: 100%;
-  overflow-x: auto;
-  border-radius: 0 0 12px 12px;
+.stat h3{
+    font-size:13px;
+    color:#334155;
+    margin-bottom:12px;
+    line-height:1.4;
 }
 
-table {
-  border-collapse: collapse;
-  width: 100%;
-  min-width: 800px;
-}
+.stat h3 i{margin-right:4px}
 
-th, td {
-  text-align: left;
-  padding: 14px 16px;
-  border-bottom: 1px solid var(--border);
-  font-size: 13px;
-  white-space: nowrap;
+.stat b{
+    display:block;
+    font-size:clamp(18px,2vw,27px);
+    color:var(--azul);
+    overflow-wrap:anywhere;
+    line-height:1.3;
 }
 
-th {
-  color: var(--muted);
-  background: #f8fafc;
-  font-weight: 700;
-}
+.stat.green b{color:var(--verde)}
+.stat.red b{color:var(--rojo)}
 
-tbody tr:hover {
-  background: #f8fafc;
-}
+.stat.clickable{cursor:pointer}
 
-tbody tr:last-child td {
-  border-bottom: 0;
+.stat.clickable:hover{
+    border-color:var(--rojo);
+    background:#fffafa;
 }
 
-.product-name {
-  font-weight: 700;
+.stat.selected{
+    border:2px solid var(--rojo);
+    background:#fff7f7;
+    padding:16px;
 }
 
-.product-code {
-  font-size: 11px;
-  color: var(--muted);
-  margin-top: 5px;
-}
+.stat.selected h3{color:var(--rojo)}
 
-.stock-badge {
-  display: inline-block;
-  padding: 5px 8px;
-  border-radius: 20px;
-  background: #dcfce7;
-  color: #166534;
-  font-size: 11px;
-  font-weight: 700;
+.stat small{
+    display:block;
+    margin-top:7px;
+    font-size:10px;
+    color:var(--gris);
+    line-height:1.4;
 }
 
-.stock-badge.low {
-  background: #fef3c7;
-  color: #92400e;
+.table-heading{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    margin-bottom:10px;
 }
 
-.stock-badge.empty {
-  background: #fee2e2;
-  color: #991b1b;
-}
+.table-heading h3{font-size:17px}
 
-.table-actions {
-  display: flex;
-  gap: 7px;
+.results-count{
+    color:var(--gris);
+    font-size:12px;
 }
 
-.icon-btn {
-  border: 1px solid var(--border);
-  background: white;
-  color: var(--muted);
-  width: 32px;
-  height: 32px;
-  border-radius: 7px;
+.table{
+    width:100%;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
 }
 
-.icon-btn:hover {
-  color: var(--primary);
-  border-color: var(--primary);
+.header-row,
+.product-row{
+    display:grid;
+    grid-template-columns:1.5fr 1fr 1fr 1fr 1fr 1.1fr;
+    gap:15px;
+    align-items:center;
 }
 
-.empty-state {
-  text-align: center;
-  padding: 45px 15px;
-  color: var(--muted);
+.header-row{
+    padding:18px 0;
+    border-bottom:1px solid var(--linea);
+    font-size:13px;
+    font-weight:bold;
+    min-width:760px;
 }
 
-.empty-state i {
-  font-size: 32px;
-  margin-bottom: 12px;
-  color: #94a3b8;
+.product-row{
+    min-height:76px;
+    border-bottom:1px solid #f1f5f9;
+    font-size:13px;
+    font-weight:bold;
+    color:#475569;
+    min-width:760px;
 }
 
-/* MODAL */
-
-.modal {
-  position: fixed;
-  inset: 0;
-  z-index: 1000;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 18px;
-  background: rgba(15, 23, 42, .58);
+.product-name{
+    color:var(--texto);
+    overflow-wrap:anywhere;
+    line-height:1.4;
 }
 
-.modal.show {
-  display: flex;
+.codigo{
+    display:block;
+    color:var(--gris);
+    font-size:11px;
+    font-weight:normal;
+    margin-top:5px;
+    overflow-wrap:anywhere;
 }
 
-.modal-content {
-  width: 100%;
-  max-width: 650px;
-  max-height: 92vh;
-  overflow-y: auto;
-  background: white;
-  border-radius: 14px;
-  box-shadow: 0 20px 60px #0003;
-}
+.product-row.low{background:#fffafa}
 
-.modal-header {
-  padding: 19px 22px;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
+.stock-badge{
+    display:inline-block;
+    padding:7px 9px;
+    border-radius:8px;
+    background:#dcfce7;
+    color:#15803d;
+    font-size:12px;
+    line-height:1.3;
 }
 
-.modal-header h2 {
-  font-size: 18px;
-  margin: 0;
+.stock-badge.low{
+    background:#fee2e2;
+    color:#b91c1c;
 }
 
-.close-modal {
-  border: 0;
-  background: transparent;
-  font-size: 23px;
-  color: var(--muted);
+.empty{
+    padding:35px 20px;
+    font-size:15px;
+    color:var(--gris);
+    text-align:center;
+    background:white;
+    line-height:1.6;
 }
 
-.modal-body {
-  padding: 22px;
+.empty i{
+    font-size:32px;
+    display:block;
+    margin-bottom:12px;
 }
 
-.form-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
-}
+.empty strong{color:#334155}
 
-.form-group {
-  min-width: 0;
+/* MODAL AGREGAR PRODUCTO */
+.modal{
+    position:fixed;
+    inset:0;
+    background:#0f172a88;
+    z-index:3000;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:15px;
 }
 
-.form-group.full {
-  grid-column: 1 / -1;
-}
+.modal.active{display:flex}
 
-.form-group label {
-  display: block;
-  margin-bottom: 7px;
-  font-size: 13px;
-  font-weight: 700;
+.modal-box{
+    width:100%;
+    max-width:600px;
+    max-height:92vh;
+    overflow-y:auto;
+    background:white;
+    border-radius:22px;
+    padding:26px;
+    box-shadow:0 20px 60px #00000035;
 }
 
-.required {
-  color: var(--danger);
+.modal-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:22px;
 }
 
-.help-text {
-  font-size: 11px;
-  color: var(--muted);
-  margin-top: 6px;
-}
+.modal-header h2{font-size:24px}
 
-.modal-footer {
-  padding: 16px 22px;
-  border-top: 1px solid var(--border);
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
+.close-modal{
+    width:38px;
+    height:38px;
+    border:0;
+    border-radius:10px;
+    background:#f1f5f9;
+    color:#334155;
+    font-size:18px;
 }
-
-/* AUTOCOMPLETADO */
 
-.autocomplete-wrap {
-  position: relative;
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:16px;
 }
 
-.sugerencias-productos {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: calc(100% + 5px);
-  z-index: 1200;
-  background: white;
-  border: 1px solid #cbd5e1;
-  border-radius: 9px;
-  box-shadow: 0 12px 28px #0f172a1f;
-  max-height: 250px;
-  overflow-y: auto;
-  display: none;
+.form-group{
+    display:flex;
+    flex-direction:column;
+    gap:7px;
+    min-width:0;
 }
 
-.sugerencias-productos.show {
-  display: block;
-}
+.form-group.full{grid-column:1/-1}
 
-.sugerencia-producto {
-  display: block;
-  width: 100%;
-  text-align: left;
-  padding: 12px;
-  border: 0;
-  border-bottom: 1px solid #f1f5f9;
-  background: white;
-  color: var(--text);
+.form-group label{
+    font-size:13px;
+    font-weight:bold;
+    color:#334155;
 }
 
-.sugerencia-producto:last-child {
-  border-bottom: 0;
+.form-group input,
+.form-group select{
+    width:100%;
+    height:46px;
+    border:1px solid #cbd5e1;
+    border-radius:11px;
+    padding:0 12px;
+    background:white;
+    color:var(--texto);
+    outline:none;
+    min-width:0;
 }
 
-.sugerencia-producto:hover,
-.sugerencia-producto:focus {
-  background: #eff6ff;
-  outline: none;
+.form-group input:focus,
+.form-group select:focus{
+    border-color:var(--azul);
+    box-shadow:0 0 0 3px #0b7cff18;
 }
 
-.sugerencia-nombre {
-  display: block;
-  font-weight: 700;
-  font-size: 13px;
+.form-note{
+    margin-top:16px;
+    padding:12px;
+    background:#eff6ff;
+    color:#1d4ed8;
+    border-radius:10px;
+    font-size:12px;
+    line-height:1.5;
 }
 
-.sugerencia-detalle {
-  display: block;
-  color: var(--muted);
-  font-size: 11px;
-  margin-top: 5px;
-  white-space: normal;
+.form-actions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-top:22px;
 }
 
-.producto-seleccionado {
-  display: none;
-  background: #eff6ff;
-  color: #1d4ed8;
-  padding: 9px 10px;
-  border-radius: 7px;
-  font-size: 12px;
-  margin-top: 8px;
+.form-actions button{
+    min-height:48px;
+    border:0;
+    border-radius:12px;
+    font-weight:bold;
+    font-size:14px;
 }
 
-.producto-seleccionado.show {
-  display: block;
+.btn-cancel{
+    background:#f1f5f9;
+    color:#334155;
 }
 
-.notice {
-  background: #fffbeb;
-  color: #92400e;
-  padding: 11px;
-  border-radius: 8px;
-  font-size: 12px;
-  line-height: 1.5;
-  margin-top: 15px;
+.btn-save{
+    background:var(--azul);
+    color:white;
 }
 
-/* AVISOS */
+.btn-save:hover{background:#0869db}
 
-.toast {
-  position: fixed;
-  right: 20px;
-  bottom: 20px;
-  z-index: 2000;
-  max-width: calc(100vw - 40px);
-  background: #166534;
-  color: white;
-  border-radius: 9px;
-  padding: 13px 17px;
-  box-shadow: 0 8px 25px #0002;
-  font-size: 13px;
-  display: none;
-}
+@media(min-width:701px) and (max-width:1000px){
+    .sidebar{width:80px;padding:18px 8px}
 
-.toast.show {
-  display: block;
-}
+    .menu-item{
+        justify-content:center;
+        padding:15px 5px;
+    }
 
-.toast.error {
-  background: #b91c1c;
-}
+    .menu-item span{display:none}
 
-@media (max-width: 1000px) {
-  .sidebar {
-    width: 205px;
-  }
+    .content{left:80px;padding:18px}
+    .header{padding:0 18px}
+    .header h1{font-size:23px}
 
-  .stats {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
+    .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .top{align-items:flex-start}
+    .top-actions{flex-wrap:wrap}
+    .search-box{width:260px}
 }
-
-@media (max-width: 700px) {
-  .app {
-    display: block;
-  }
-
-  .sidebar {
-    width: 100%;
-    padding: 10px;
-  }
-
-  .logo {
-    padding: 8px 10px 12px;
-  }
-
-  .menu-label {
-    display: none;
-  }
-
-  .menu {
-    display: flex;
-    gap: 6px;
-    overflow-x: auto;
-    padding-bottom: 4px;
-  }
-
-  .menu a {
-    flex-shrink: 0;
-    padding: 10px;
-    margin: 0;
-  }
-
-  .menu a span {
-    display: none;
-  }
-
-  .topbar {
-    height: 55px;
-    padding: 0 16px;
-  }
-
-  .content {
-    padding: 16px;
-  }
 
-  .page-heading h1 {
-    font-size: 23px;
-  }
+@media(max-width:700px){
+    body{overflow:hidden}
 
-  .stats {
-    gap: 10px;
-  }
+    .header{
+        height:62px;
+        padding:0 10px;
+    }
 
-  .stat-card {
-    padding: 13px;
-  }
+    .header-left{gap:9px}
+    .header h1{font-size:21px}
 
-  .stat-value {
-    font-size: 21px;
-  }
+    .menu-toggle{
+        width:40px;
+        height:40px;
+    }
 
-  .panel-header {
-    align-items: stretch;
-  }
+    .menu-toggle i{font-size:20px}
 
-  .filters {
-    width: 100%;
-  }
+    .header-actions{gap:6px}
+
+    .header .btn{
+        min-height:39px;
+        padding:0 10px;
+        font-size:11px;
+        border-radius:10px;
+        gap:5px;
+    }
 
-  .search-input {
-    min-width: 0;
-    flex: 1;
-  }
+    .sidebar{
+        display:block!important;
+        top:62px;
+        left:0;
+        bottom:0;
+        width:270px;
+        max-width:85vw;
+        padding:18px 12px;
+        z-index:950;
+        transform:translateX(-105%);
+        visibility:hidden;
+        box-shadow:8px 0 25px #00000012;
+    }
 
-  .form-grid {
-    grid-template-columns: 1fr;
-  }
+    .sidebar.menu-visible{
+        transform:translateX(0);
+        visibility:visible;
+    }
 
-  .form-group.full {
-    grid-column: auto;
-  }
+    .menu-item{
+        justify-content:flex-start;
+        padding:14px 15px;
+    }
+
+    .menu-item span{display:inline}
+
+    .content{
+        position:fixed;
+        top:62px;
+        left:0!important;
+        right:0;
+        bottom:0;
+        width:100%;
+        padding:12px 11px 25px;
+        overflow-y:auto;
+        -webkit-overflow-scrolling:touch;
+    }
 
-  .modal {
-    padding: 10px;
-  }
+    .card{
+        padding:0;
+        background:transparent;
+        box-shadow:none;
+        border-radius:0;
+    }
+
+    .top{
+        flex-direction:column;
+        align-items:stretch;
+        gap:12px;
+        margin-bottom:12px;
+    }
+
+    .top h2{font-size:25px}
 
-  .modal-content {
-    max-height: 96vh;
-  }
+    .top-actions{
+        display:flex;
+        width:100%;
+    }
+
+    .search-box{
+        width:100%;
+        height:42px;
+        background:white;
+        border-radius:11px;
+    }
+
+    /* LOS CUATRO INDICADORES SE QUEDAN FIJOS ARRIBA */
+    .stats-sticky{
+        top:0;
+        z-index:100;
+        margin:0 0 12px;
+        padding:8px 0 10px;
+        background:var(--fondo);
+    }
+
+    .stats{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:8px;
+    }
+
+    .stat{
+        padding:10px;
+        border-radius:12px;
+        box-shadow:0 3px 9px #00000008;
+    }
+
+    .stat h3{
+        font-size:10px;
+        margin-bottom:7px;
+        line-height:1.35;
+    }
+
+    .stat h3 i{margin-right:2px}
+
+    .stat b{
+        font-size:clamp(15px,4vw,20px);
+        line-height:1.25;
+    }
+
+    .stat small{
+        font-size:9px;
+        margin-top:5px;
+    }
+
+    .stat.selected{padding:9px}
+
+    .table-heading{margin-bottom:10px}
+    .table-heading h3{font-size:15px}
+    .results-count{font-size:10px}
+
+    .table{
+        background:white;
+        border-radius:12px;
+        padding:0 12px;
+    }
+
+    .header-row{
+        min-width:760px;
+        padding:15px 0;
+        font-size:12px;
+    }
+
+    .product-row{
+        min-width:760px;
+        min-height:66px;
+        padding:10px 0;
+        font-size:12px;
+    }
+
+    .modal-box{
+        padding:19px;
+        border-radius:17px;
+    }
+
+    .modal-header h2{font-size:21px}
+}
+
+@media(max-width:380px){
+    .header h1{font-size:18px}
+
+    .header .btn{
+        padding:0 7px;
+        font-size:10px;
+    }
+
+    .header .btn span{display:none}
+
+    .stat{padding:8px}
+    .stat.selected{padding:7px}
+    .stat h3{font-size:9px}
+    .stat b{font-size:15px}
+    .stat small{font-size:8px}
+
+    .form-grid{grid-template-columns:1fr}
+    .form-group.full{grid-column:auto}
 }
 </style>
 </head>
 
 <body>
-<div class="app">
 
-  <aside class="sidebar">
-    <div class="logo">
-      <i class="fa-solid fa-store"></i> Mi Negocio
-    </div>
-
-    <div class="menu-label">Menú principal</div>
-
-    <nav class="menu">
-      <a href="index.html">
-        <i class="fa-solid fa-chart-line"></i><span>Dashboard</span>
-      </a>
-      <a href="productos.html">
-        <i class="fa-solid fa-box"></i><span>Productos</span>
-      </a>
-      <a href="inventario.html" class="active">
-        <i class="fa-solid fa-warehouse"></i><span>Inventario</span>
-      </a>
-      <a href="clientes.html">
-        <i class="fa-solid fa-users"></i><span>Clientes</span>
-      </a>
-      <a href="ventas.html">
-        <i class="fa-solid fa-cart-shopping"></i><span>Ventas</span>
-      </a>
-      <a href="cotizaciones.html">
-        <i class="fa-solid fa-file-invoice"></i><span>Cotizaciones</span>
-      </a>
-      <a href="reportes.html">
-        <i class="fa-solid fa-chart-pie"></i><span>Reportes</span>
-      </a>
-      <a href="gastos.html">
-        <i class="fa-solid fa-money-bill-wave"></i><span>Gastos</span>
-      </a>
-      <a href="configuracion.html">
-        <i class="fa-solid fa-gear"></i><span>Configuración</span>
-      </a>
-    </nav>
-  </aside>
-
-  <main class="main">
-    <header class="topbar">
-      <div class="topbar-title">Control de inventario</div>
-      <div class="user">
-        <i class="fa-solid fa-circle-user"></i> Administrador
-      </div>
-    </header>
-
-    <section class="content">
-      <div class="page-heading">
-        <div>
-          <h1>Inventario</h1>
-          <p>Administra las existencias de tus productos.</p>
-        </div>
-
-        <div class="actions">
-          <button class="btn btn-light" id="exportarBtn">
-            <i class="fa-solid fa-file-export"></i> Exportar CSV
-          </button>
-          <button class="btn btn-primary" id="abrirModalBtn">
-            <i class="fa-solid fa-plus"></i> Agregar al inventario
-          </button>
-        </div>
-      </div>
-
-      <div class="stats">
-        <div class="stat-card">
-          <div class="stat-top">
-            <span>Productos registrados</span>
-            <span class="stat-icon"><i class="fa-solid fa-boxes-stacked"></i></span>
-          </div>
-          <div class="stat-value" id="totalProductos">0</div>
-          <div class="stat-description">Productos diferentes</div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-top">
-            <span>Unidades disponibles</span>
-            <span class="stat-icon"><i class="fa-solid fa-cubes"></i></span>
-          </div>
-          <div class="stat-value" id="totalUnidades">0</div>
-          <div class="stat-description">Cantidad total en existencia</div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-top">
-            <span>Inventario valorizado</span>
-            <span class="stat-icon"><i class="fa-solid fa-sack-dollar"></i></span>
-          </div>
-          <div class="stat-value" id="valorInventario">RD$ 0.00</div>
-          <div class="stat-description">Valor calculado al costo</div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-top">
-            <span>Stock bajo</span>
-            <span class="stat-icon"><i class="fa-solid fa-triangle-exclamation"></i></span>
-          </div>
-          <div class="stat-value" id="productosBajos">0</div>
-          <div class="stat-description">Productos con 5 unidades o menos</div>
-        </div>
-      </div>
-
-      <section class="panel">
-        <div class="panel-header">
-          <h2><i class="fa-solid fa-list"></i> Existencias</h2>
-
-          <div class="filters">
-            <input
-              class="field-control search-input"
-              id="buscarInventario"
-              type="search"
-              placeholder="Buscar por nombre o código..."
-            >
-
-            <select class="field-control" id="filtroStock" style="width:auto">
-              <option value="todos">Todos los productos</option>
-              <option value="bajo">Stock bajo</option>
-              <option value="agotado">Agotados</option>
-              <option value="disponible">Disponibles</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Producto</th>
-                <th>Departamento</th>
-                <th>Costo</th>
-                <th>Precio detalle</th>
-                <th>Existencia</th>
-                <th>Valor al costo</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody id="tablaInventario"></tbody>
-          </table>
-        </div>
-      </section>
-    </section>
-  </main>
-</div>
-
-<!-- MODAL PARA AGREGAR PRODUCTOS -->
-
-<div class="modal" id="modalInventario">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h2><i class="fa-solid fa-box-open"></i> Agregar al inventario</h2>
-      <button class="close-modal" id="cerrarModalBtn" aria-label="Cerrar">&times;</button>
-    </div>
-
-    <form id="formInventario">
-      <div class="modal-body">
-        <div class="form-grid">
-
-          <div class="form-group full">
-            <label for="nombreProducto">
-              Buscar producto <span class="required">*</span>
-            </label>
-
-            <div class="autocomplete-wrap">
-              <input
-                class="field-control"
-                type="text"
-                id="nombreProducto"
-                autocomplete="off"
-                placeholder="Escribe el nombre o código del producto..."
-                required
-              >
-              <div
-                class="sugerencias-productos"
-                id="sugerenciasProductos"
-                role="listbox"
-              ></div>
-            </div>
-
-            <div class="producto-seleccionado" id="productoSeleccionado"></div>
-            <div class="help-text">
-              Selecciona un producto de la lista para completar sus datos automáticamente.
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="codigoProducto">Código / SKU</label>
-            <input class="field-control" id="codigoProducto" type="text" placeholder="Código del producto">
-          </div>
-
-          <div class="form-group">
-            <label for="departamentoProducto">Departamento</label>
-            <input class="field-control" id="departamentoProducto" type="text" placeholder="Ej. Bebidas">
-          </div>
-
-          <div class="form-group">
-            <label for="costoProducto">Costo unitario (RD$)</label>
-            <input class="field-control" id="costoProducto" type="number" min="0" step="0.01" value="0">
-          </div>
-
-          <div class="form-group">
-            <label for="precioProducto">Precio detalle (RD$)</label>
-            <input class="field-control" id="precioProducto" type="number" min="0" step="0.01" value="0">
-          </div>
-
-          <div class="form-group">
-            <label for="cantidadProducto">
-              Cantidad a agregar <span class="required">*</span>
-            </label>
-            <input class="field-control" id="cantidadProducto" type="number" min="1" step="1" value="1" required>
-          </div>
-
-          <div class="form-group">
-            <label for="stockActual">Existencia actual</label>
-            <input class="field-control" id="stockActual" type="number" readonly value="0">
-          </div>
-
-          <div class="form-group full">
-            <div class="notice">
-              <i class="fa-solid fa-circle-info"></i>
-              Si seleccionas un producto existente, se sumará la cantidad indicada a sus existencias. Si escribes un producto nuevo, se registrará en el inventario.
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="modal-footer">
-        <button class="btn btn-light" type="button" id="cancelarBtn">Cancelar</button>
-        <button class="btn btn-primary" type="submit">
-          <i class="fa-solid fa-check"></i> Guardar inventario
+<header class="header">
+    <div class="header-left">
+        <button class="menu-toggle" onclick="toggleMenu()"
+                aria-label="Abrir menú" aria-expanded="false">
+            <i class="fa-solid fa-bars" id="menuIcon"></i>
         </button>
-      </div>
-    </form>
-  </div>
-</div>
+        <h1>Inventario</h1>
+    </div>
 
-<div class="toast" id="toast"></div>
+    <!-- BOTONES SOLAMENTE EN EL HEADER -->
+    <div class="header-actions">
+        <button class="btn btn-add" onclick="abrirFormulario()">
+            <i class="fa-solid fa-plus"></i>
+            <span>Agregar producto</span>
+        </button>
+
+        <button class="btn btn-descargar" onclick="descargarInventario()">
+            <i class="fa-solid fa-file-csv"></i>
+            <span>Descargar</span>
+        </button>
+    </div>
+</header>
+
+<div class="menu-overlay" id="menuOverlay" onclick="cerrarMenu()"></div>
+
+<aside class="sidebar" id="sidebar">
+    <div class="menu-item" onclick="irA('nueva_venta.html')">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span>Nueva venta</span>
+    </div>
+
+    <div class="menu-item" onclick="irA('dashboard.html')">
+        <i class="fa-solid fa-chart-line"></i>
+        <span>Dashboard</span>
+    </div>
+
+    <div class="menu-item" onclick="irA('productos.html')">
+        <i class="fa-solid fa-box"></i>
+        <span>Productos</span>
+    </div>
+
+    <div class="menu-item active" onclick="irA('inventario.html')">
+        <i class="fa-solid fa-warehouse"></i>
+        <span>Inventario</span>
+    </div>
+
+    <div class="menu-item" onclick="irA('clientes.html')">
+        <i class="fa-solid fa-users"></i>
+        <span>Clientes</span>
+    </div>
+
+    <div class="menu-item" onclick="irA('ventas.html')">
+        <i class="fa-solid fa-receipt"></i>
+        <span>Ventas</span>
+    </div>
+
+    <div class="menu-item" onclick="irA('cotizaciones.html')">
+        <i class="fa-solid fa-file-lines"></i>
+        <span>Cotizaciones</span>
+    </div>
+
+    <div class="menu-item" onclick="irA('reportes.html')">
+        <i class="fa-solid fa-chart-pie"></i>
+        <span>Reportes</span>
+    </div>
+
+    <div class="menu-item" onclick="irA('gastos.html')">
+        <i class="fa-solid fa-money-bill-wave"></i>
+        <span>Gastos</span>
+    </div>
+
+    <div class="menu-item" onclick="irA('compras.html')">
+        <i class="fa-solid fa-cart-plus"></i>
+        <span>Compras</span>
+    </div>
+
+    <div class="menu-item config-separator" onclick="irA('configuracion.html')">
+        <i class="fa-solid fa-gear"></i>
+        <span>Configuración</span>
+    </div>
+</aside>
+
+<main class="content">
+    <div class="card">
+
+        <div class="top">
+            <h2>Inventario</h2>
+
+            <!-- SOLO SE MANTIENE EL BUSCADOR DEBAJO -->
+            <div class="top-actions">
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="search" id="buscar"
+                           placeholder="Buscar producto o código"
+                           autocomplete="off">
+                </div>
+            </div>
+        </div>
+
+        <div class="stats-sticky">
+            <div class="stats">
+                <div class="stat">
+                    <h3><i class="fa-solid fa-boxes-stacked"></i> Total productos</h3>
+                    <b id="totalProductos">0</b>
+                    <small>Productos registrados</small>
+                </div>
+
+                <div class="stat green">
+                    <h3><i class="fa-solid fa-coins"></i> Total costo inventario</h3>
+                    <b id="totalCostos">RD$ 0.00</b>
+                    <small>Costo de las existencias</small>
+                </div>
+
+                <div class="stat">
+                    <h3><i class="fa-solid fa-sack-dollar"></i> Valor de venta inventario</h3>
+                    <b id="totalVentas">RD$ 0.00</b>
+                    <small>Valor de venta de las existencias</small>
+                </div>
+
+                <div class="stat red clickable" id="tarjetaBajoStock"
+                     onclick="alternarBajoStock()"
+                     role="button" tabindex="0" aria-pressed="false">
+                    <h3><i class="fa-solid fa-triangle-exclamation"></i> Productos bajo stock</h3>
+                    <b id="bajoStock">0</b>
+                    <small id="textoBajoStock">Pulsa para filtrar</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-heading">
+            <h3 id="tituloLista">Lista de inventario</h3>
+            <span class="results-count" id="cantidadResultados">0 productos</span>
+        </div>
+
+        <div class="table">
+            <div class="header-row">
+                <div>Producto</div>
+                <div>Departamento</div>
+                <div>Costo</div>
+                <div>Precio</div>
+                <div>Stock</div>
+                <div>Total costo</div>
+            </div>
+
+            <div id="listaInventario"></div>
+        </div>
+    </div>
+</main>
+
+<!-- FORMULARIO AGREGAR PRODUCTO -->
+<div class="modal" id="modalProducto">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h2><i class="fa-solid fa-box-open"></i> Agregar producto</h2>
+            <button type="button" class="close-modal"
+                    onclick="cerrarFormulario()" aria-label="Cerrar">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <form id="formProducto">
+            <div class="form-grid">
+                <div class="form-group full">
+                    <label for="nombreProducto">Nombre del producto *</label>
+                    <input id="nombreProducto" name="nombre"
+                           type="text" required maxlength="150"
+                           placeholder="Ej. Arroz selecto">
+                </div>
+
+                <div class="form-group">
+                    <label for="codigoProducto">Código / SKU</label>
+                    <input id="codigoProducto" name="codigo"
+                           type="text" maxlength="80"
+                           placeholder="Código del producto">
+                </div>
+
+                <div class="form-group">
+                    <label for="departamentoProducto">Departamento</label>
+                    <input id="departamentoProducto" name="departamento"
+                           type="text" maxlength="100"
+                           placeholder="Ej. Alimentos">
+                </div>
+
+                <div class="form-group">
+                    <label for="costoProducto">Costo unitario (RD$) *</label>
+                    <input id="costoProducto" name="costo"
+                           type="number" min="0" step="0.01"
+                           required placeholder="0.00">
+                </div>
+
+                <div class="form-group">
+                    <label for="precioProducto">Precio de venta (RD$) *</label>
+                    <input id="precioProducto" name="precio"
+                           type="number" min="0" step="0.01"
+                           required placeholder="0.00">
+                </div>
+
+                <div class="form-group full">
+                    <label for="stockProducto">Cantidad inicial en inventario *</label>
+                    <input id="stockProducto" name="stock"
+                           type="number" min="0" step="1"
+                           required value="0">
+                </div>
+            </div>
+
+            <div class="form-note">
+                <i class="fa-solid fa-circle-info"></i>
+                El producto se guardará en el inventario de este dispositivo.
+                Si el código ya existe, se te pedirá confirmar antes de agregarlo.
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="btn-cancel"
+                        onclick="cerrarFormulario()">Cancelar</button>
+
+                <button type="submit" class="btn-save">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    Guardar producto
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
 
 <script>
-"use strict";
+const STORAGE_KEY = "productosPOS";
+const LIMITE_STOCK = 5;
 
-/*
-  CLAVE COMPARTIDA:
-  Este archivo busca los productos en localStorage bajo "productosPOS".
-  La página productos.html debe guardar sus productos en esa misma clave
-  para que el autocompletado pueda encontrarlos.
-*/
+let productos = [];
+let soloBajoStock = false;
+let listaVisible = [];
 
-const CLAVE_PRODUCTOS = "productosPOS";
-const STOCK_BAJO = 5;
-
-const $ = (id) => document.getElementById(id);
-
-let productoElegido = null;
-let temporizadorToast = null;
-
-/* UTILIDADES */
-
-function numero(valor) {
-  const n = Number(valor);
-  return Number.isFinite(n) ? n : 0;
+function formato(valor){
+    return "RD$ " + Number(valor || 0).toLocaleString("es-DO",{
+        minimumFractionDigits:2,
+        maximumFractionDigits:2
+    });
 }
 
-function dinero(valor) {
-  return "RD$ " + numero(valor).toLocaleString("es-DO", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  });
+function escapar(valor){
+    return String(valor ?? "").replace(/[&<>"']/g,c => ({
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#39;"
+    }[c]));
 }
 
-function escaparHTML(valor) {
-  return String(valor ?? "").replace(/[&<>"']/g, caracter => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#039;"
-  })[caracter]);
-}
-
-function mostrarToast(mensaje, error = false) {
-  const toast = $("toast");
-  toast.textContent = mensaje;
-  toast.classList.toggle("error", error);
-  toast.classList.add("show");
-
-  clearTimeout(temporizadorToast);
-  temporizadorToast = setTimeout(() => {
-    toast.classList.remove("show");
-  }, 3000);
-}
-
-/* LECTURA Y NORMALIZACIÓN DE PRODUCTOS */
-
-function leerProductosGuardados() {
-  try {
-    const datos = localStorage.getItem(CLAVE_PRODUCTOS);
-    if (!datos) return [];
-
-    const productos = JSON.parse(datos);
-    return Array.isArray(productos) ? productos : [];
-  } catch (error) {
-    console.error("No se pudieron leer los productos:", error);
-    return [];
-  }
-}
-
-function guardarProductos(productos) {
-  localStorage.setItem(CLAVE_PRODUCTOS, JSON.stringify(productos));
-}
-
-function primerValor(objeto, nombres, valorPorDefecto = "") {
-  for (const nombre of nombres) {
-    if (
-      objeto &&
-      Object.prototype.hasOwnProperty.call(objeto, nombre) &&
-      objeto[nombre] !== null &&
-      objeto[nombre] !== undefined &&
-      objeto[nombre] !== ""
-    ) {
-      return objeto[nombre];
+function leerProductos(){
+    try{
+        const datos = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+        return Array.isArray(datos) ? datos : [];
+    }catch(error){
+        return [];
     }
-  }
-
-  return valorPorDefecto;
 }
 
-function normalizarProducto(producto, indice = 0) {
-  const nombre = primerValor(producto, [
-    "nombre", "producto", "name", "descripcion", "descripción", "titulo", "title"
-  ], "");
-
-  const codigo = primerValor(producto, [
-    "codigo", "código", "sku", "code", "barcode", "codigoBarras"
-  ], "");
-
-  const departamento = primerValor(producto, [
-    "departamento", "categoria", "categoría", "category"
-  ], "");
-
-  const costo = numero(primerValor(producto, [
-    "costo", "precioCompra", "precio_compra", "cost", "purchasePrice"
-  ], 0));
-
-  const precio = numero(primerValor(producto, [
-    "precio", "precioVenta", "precio_venta", "precioDetalle",
-    "precioDetalle", "price", "salePrice"
-  ], 0));
-
-  const stock = numero(primerValor(producto, [
-    "stock", "existencia", "cantidad", "inventario", "quantity", "existencias"
-  ], 0));
-
-  return {
-    ...producto,
-    _indice: indice,
-    nombre: String(nombre),
-    codigo: String(codigo),
-    departamento: String(departamento),
-    costo,
-    precio,
-    stock
-  };
+function guardarProductos(datos){
+    try{
+        localStorage.setItem(STORAGE_KEY,JSON.stringify(datos));
+        return true;
+    }catch(error){
+        alert("No se pudieron guardar los productos. Comprueba el almacenamiento del navegador.");
+        return false;
+    }
 }
 
-function obtenerProductos() {
-  return leerProductosGuardados().map(normalizarProducto);
+function normalizarProducto(p){
+    return {
+        ...p,
+        nombre:String(p.nombre || ""),
+        departamento:String(p.departamento || p.categoria || "Sin departamento"),
+        codigo:String(p.codigo || ""),
+        costo:Number(p.costo) || 0,
+        precio:Number(p.precio) || 0,
+        stock:Math.max(0,Number(p.stock) || 0)
+    };
 }
 
-/* MODAL */
-
-function abrirModal() {
-  productoElegido = null;
-  $("formInventario").reset();
-
-  $("cantidadProducto").value = 1;
-  $("costoProducto").value = 0;
-  $("precioProducto").value = 0;
-  $("stockActual").value = 0;
-
-  $("productoSeleccionado").textContent = "";
-  $("productoSeleccionado").classList.remove("show");
-  $("sugerenciasProductos").innerHTML = "";
-  $("sugerenciasProductos").classList.remove("show");
-
-  $("modalInventario").classList.add("show");
-  setTimeout(() => $("nombreProducto").focus(), 100);
+function cargarProductos(){
+    productos = leerProductos().map(normalizarProducto);
 }
 
-function cerrarModal() {
-  $("modalInventario").classList.remove("show");
-  $("sugerenciasProductos").classList.remove("show");
-  productoElegido = null;
+function calcularResumen(){
+    const totalCostos = productos.reduce(
+        (s,p) => s + p.costo * p.stock,0
+    );
+
+    const totalVentas = productos.reduce(
+        (s,p) => s + p.precio * p.stock,0
+    );
+
+    const totalBajoStock = productos.filter(
+        p => p.stock <= LIMITE_STOCK
+    ).length;
+
+    document.getElementById("totalProductos").textContent = productos.length;
+    document.getElementById("totalCostos").textContent = formato(totalCostos);
+    document.getElementById("totalVentas").textContent = formato(totalVentas);
+    document.getElementById("bajoStock").textContent = totalBajoStock;
+
+    const tarjeta = document.getElementById("tarjetaBajoStock");
+    tarjeta.classList.toggle("selected",soloBajoStock);
+    tarjeta.setAttribute("aria-pressed",String(soloBajoStock));
+
+    document.getElementById("textoBajoStock").textContent =
+        soloBajoStock
+        ? "Pulsa para ver todo el inventario"
+        : "Pulsa para filtrar los productos";
 }
 
-$("abrirModalBtn").addEventListener("click", abrirModal);
-$("cerrarModalBtn").addEventListener("click", cerrarModal);
-$("cancelarBtn").addEventListener("click", cerrarModal);
+function mostrarInventario(lista){
+    const contenedor = document.getElementById("listaInventario");
+    listaVisible = lista.slice();
 
-$("modalInventario").addEventListener("click", evento => {
-  if (evento.target === $("modalInventario")) cerrarModal();
-});
+    document.getElementById("cantidadResultados").textContent =
+        lista.length + (lista.length === 1 ? " producto" : " productos");
 
-document.addEventListener("keydown", evento => {
-  if (evento.key === "Escape") cerrarModal();
-});
+    document.getElementById("tituloLista").textContent =
+        soloBajoStock ? "Productos bajo stock" : "Lista de inventario";
 
-/* AUTOCOMPLETADO DE PRODUCTOS */
-
-function mostrarSugerencias() {
-  const texto = $("nombreProducto").value.trim().toLowerCase();
-  const contenedor = $("sugerenciasProductos");
-
-  // Si se modifica el nombre luego de seleccionar, se invalida la selección.
-  if (
-    productoElegido &&
-    texto !== productoElegido.nombre.toLowerCase() &&
-    texto !== productoElegido.codigo.toLowerCase()
-  ) {
-    productoElegido = null;
-    $("productoSeleccionado").classList.remove("show");
-    $("stockActual").value = 0;
-  }
-
-  if (!texto) {
-    contenedor.innerHTML = "";
-    contenedor.classList.remove("show");
-    return;
-  }
-
-  const coincidencias = obtenerProductos()
-    .filter(producto => {
-      const nombre = producto.nombre.toLowerCase();
-      const codigo = producto.codigo.toLowerCase();
-
-      return nombre.includes(texto) || codigo.includes(texto);
-    })
-    .slice(0, 12);
-
-  if (!coincidencias.length) {
-    contenedor.innerHTML = `
-      <div class="sugerencia-producto">
-        <span class="sugerencia-nombre">No se encontraron productos</span>
-        <span class="sugerencia-detalle">
-          Puedes registrar "${escaparHTML($("nombreProducto").value.trim())}" como un producto nuevo.
-        </span>
-      </div>
-    `;
-    contenedor.classList.add("show");
-    return;
-  }
-
-  contenedor.innerHTML = coincidencias.map(producto => `
-    <button
-      type="button"
-      class="sugerencia-producto"
-      data-indice="${producto._indice}"
-      role="option"
-    >
-      <span class="sugerencia-nombre">${escaparHTML(producto.nombre)}</span>
-      <span class="sugerencia-detalle">
-        Código: ${escaparHTML(producto.codigo || "Sin código")}
-        · Costo: ${dinero(producto.costo)}
-        · Precio: ${dinero(producto.precio)}
-        · Stock: ${producto.stock}
-      </span>
-    </button>
-  `).join("");
-
-  contenedor.classList.add("show");
-}
-
-function seleccionarProducto(indice) {
-  const productosOriginales = leerProductosGuardados();
-  const original = productosOriginales[indice];
-
-  if (!original) {
-    mostrarToast("El producto ya no está disponible. Intenta buscarlo nuevamente.", true);
-    mostrarSugerencias();
-    return;
-  }
-
-  const producto = normalizarProducto(original, indice);
-  productoElegido = producto;
-
-  $("nombreProducto").value = producto.nombre;
-  $("codigoProducto").value = producto.codigo;
-  $("departamentoProducto").value = producto.departamento;
-  $("costoProducto").value = producto.costo;
-  $("precioProducto").value = producto.precio;
-  $("stockActual").value = producto.stock;
-
-  $("productoSeleccionado").innerHTML =
-    '<i class="fa-solid fa-circle-check"></i> Producto seleccionado: <strong>' +
-    escaparHTML(producto.nombre) +
-    '</strong>. Se actualizarán sus existencias.';
-
-  $("productoSeleccionado").classList.add("show");
-  $("sugerenciasProductos").classList.remove("show");
-  $("cantidadProducto").focus();
-  $("cantidadProducto").select();
-}
-
-$("nombreProducto").addEventListener("input", mostrarSugerencias);
-
-$("nombreProducto").addEventListener("focus", () => {
-  if ($("nombreProducto").value.trim()) mostrarSugerencias();
-});
-
-$("sugerenciasProductos").addEventListener("click", evento => {
-  const boton = evento.target.closest("button[data-indice]");
-  if (!boton) return;
-
-  seleccionarProducto(Number(boton.dataset.indice));
-});
-
-document.addEventListener("click", evento => {
-  if (!evento.target.closest(".autocomplete-wrap")) {
-    $("sugerenciasProductos").classList.remove("show");
-  }
-});
-
-/* TABLA DE INVENTARIO */
-
-function renderizarInventario() {
-  const productos = obtenerProductos();
-  const busqueda = $("buscarInventario").value.trim().toLowerCase();
-  const filtro = $("filtroStock").value;
-
-  const productosFiltrados = productos.filter(producto => {
-    const coincideBusqueda =
-      producto.nombre.toLowerCase().includes(busqueda) ||
-      producto.codigo.toLowerCase().includes(busqueda) ||
-      producto.departamento.toLowerCase().includes(busqueda);
-
-    let coincideFiltro = true;
-
-    if (filtro === "bajo") {
-      coincideFiltro = producto.stock > 0 && producto.stock <= STOCK_BAJO;
-    } else if (filtro === "agotado") {
-      coincideFiltro = producto.stock <= 0;
-    } else if (filtro === "disponible") {
-      coincideFiltro = producto.stock > 0;
+    if(lista.length === 0){
+        contenedor.innerHTML = `
+            <div class="empty">
+                <i class="fa-solid fa-box-open"></i>
+                <strong>No hay productos encontrados</strong>
+                <p style="margin-top:8px">
+                    Agrega un producto o cambia la búsqueda.
+                </p>
+            </div>
+        `;
+        return;
     }
 
-    return coincideBusqueda && coincideFiltro;
-  });
+    contenedor.innerHTML = lista.map(p => {
+        const bajo = p.stock <= LIMITE_STOCK;
 
-  $("tablaInventario").innerHTML = "";
-
-  if (!productosFiltrados.length) {
-    $("tablaInventario").innerHTML = `
-      <tr>
-        <td colspan="7">
-          <div class="empty-state">
-            <i class="fa-solid fa-box-open"></i>
-            <div>No hay productos para mostrar.</div>
-            <div style="font-size:12px;margin-top:7px">
-              Agrega productos o cambia los filtros de búsqueda.
+        return `
+            <div class="product-row ${bajo ? "low" : ""}">
+                <div class="product-name">
+                    ${escapar(p.nombre || "Sin nombre")}
+                    <span class="codigo">Código: ${escapar(p.codigo || "-")}</span>
+                </div>
+                <div>${escapar(p.departamento)}</div>
+                <div>${formato(p.costo)}</div>
+                <div>${formato(p.precio)}</div>
+                <div>
+                    <span class="stock-badge ${bajo ? "low" : ""}">
+                        ${p.stock}
+                    </span>
+                </div>
+                <div>${formato(p.costo * p.stock)}</div>
             </div>
-          </div>
-        </td>
-      </tr>
-    `;
-  } else {
-    $("tablaInventario").innerHTML = productosFiltrados.map(producto => {
-      let claseStock = "";
-      let textoStock = "Disponible";
-
-      if (producto.stock <= 0) {
-        claseStock = "empty";
-        textoStock = "Agotado";
-      } else if (producto.stock <= STOCK_BAJO) {
-        claseStock = "low";
-        textoStock = "Stock bajo";
-      }
-
-      return `
-        <tr>
-          <td>
-            <div class="product-name">${escaparHTML(producto.nombre || "Sin nombre")}</div>
-            <div class="product-code">Código: ${escaparHTML(producto.codigo || "—")}</div>
-          </td>
-          <td>${escaparHTML(producto.departamento || "Sin departamento")}</td>
-          <td>${dinero(producto.costo)}</td>
-          <td>${dinero(producto.precio)}</td>
-          <td>
-            <strong>${producto.stock}</strong>
-            <div style="margin-top:5px">
-              <span class="stock-badge ${claseStock}">${textoStock}</span>
-            </div>
-          </td>
-          <td>${dinero(producto.costo * producto.stock)}</td>
-          <td>
-            <div class="table-actions">
-              <button class="icon-btn"
-                title="Agregar existencias"
-                aria-label="Agregar existencias"
-                data-accion="agregar"
-                data-indice="${producto._indice}">
-                <i class="fa-solid fa-plus"></i>
-              </button>
-              <button class="icon-btn"
-                title="Editar datos"
-                aria-label="Editar datos"
-                data-accion="editar"
-                data-indice="${producto._indice}">
-                <i class="fa-solid fa-pen"></i>
-              </button>
-            </div>
-          </td>
-        </tr>
-      `;
+        `;
     }).join("");
-  }
-
-  // Las estadísticas se calculan con todos los productos, no solo con los filtrados.
-  const totalProductos = productos.length;
-  const totalUnidades = productos.reduce((suma, p) => suma + p.stock, 0);
-  const valorTotal = productos.reduce((suma, p) => suma + p.costo * p.stock, 0);
-  const bajos = productos.filter(p => p.stock <= STOCK_BAJO).length;
-
-  $("totalProductos").textContent = totalProductos;
-  $("totalUnidades").textContent = totalUnidades.toLocaleString("es-DO");
-  $("valorInventario").textContent = dinero(valorTotal);
-  $("productosBajos").textContent = bajos;
 }
 
-$("buscarInventario").addEventListener("input", renderizarInventario);
-$("filtroStock").addEventListener("change", renderizarInventario);
+function aplicarBusqueda(){
+    const texto = document.getElementById("buscar").value.trim().toLowerCase();
 
-/* AGREGAR O ACTUALIZAR EXISTENCIAS */
+    let filtrados = productos.filter(p => [
+        p.nombre,p.departamento,p.costo,p.precio,p.codigo,p.stock
+    ].some(valor => String(valor ?? "").toLowerCase().includes(texto)));
 
-$("formInventario").addEventListener("submit", evento => {
-  evento.preventDefault();
-
-  const nombre = $("nombreProducto").value.trim();
-  const codigo = $("codigoProducto").value.trim();
-  const departamento = $("departamentoProducto").value.trim();
-  const costo = numero($("costoProducto").value);
-  const precio = numero($("precioProducto").value);
-  const cantidad = Number($("cantidadProducto").value);
-
-  if (!nombre) {
-    mostrarToast("Escribe el nombre del producto.", true);
-    $("nombreProducto").focus();
-    return;
-  }
-
-  if (!Number.isInteger(cantidad) || cantidad < 1) {
-    mostrarToast("La cantidad debe ser un número entero mayor que cero.", true);
-    $("cantidadProducto").focus();
-    return;
-  }
-
-  if (costo < 0 || precio < 0) {
-    mostrarToast("El costo y el precio no pueden ser negativos.", true);
-    return;
-  }
-
-  const productos = leerProductosGuardados();
-
-  // Confirmar que el producto seleccionado sigue existiendo.
-  if (productoElegido) {
-    const indice = productoElegido._indice;
-    const original = productos[indice];
-
-    if (!original) {
-      mostrarToast("No se encontró el producto seleccionado. Búscalo nuevamente.", true);
-      productoElegido = null;
-      return;
+    if(soloBajoStock){
+        filtrados = filtrados.filter(p => p.stock <= LIMITE_STOCK);
     }
 
-    const productoActual = normalizarProducto(original, indice);
-    const stockNuevo = productoActual.stock + cantidad;
+    mostrarInventario(filtrados);
+    calcularResumen();
+}
 
-    productos[indice] = {
-      ...original,
-      stock: stockNuevo,
-      existencia: original.existencia !== undefined ? stockNuevo : original.existencia,
-      cantidad: original.cantidad !== undefined ? stockNuevo : original.cantidad,
-      inventario: original.inventario !== undefined ? stockNuevo : original.inventario
+function alternarBajoStock(){
+    soloBajoStock = !soloBajoStock;
+    aplicarBusqueda();
+}
+
+document.getElementById("tarjetaBajoStock").addEventListener("keydown",e => {
+    if(e.key === "Enter" || e.key === " "){
+        e.preventDefault();
+        alternarBajoStock();
+    }
+});
+
+document.getElementById("buscar").addEventListener("input",aplicarBusqueda);
+
+/* AGREGAR PRODUCTOS */
+function abrirFormulario(){
+    document.getElementById("modalProducto").classList.add("active");
+    setTimeout(() => document.getElementById("nombreProducto").focus(),100);
+}
+
+function cerrarFormulario(){
+    document.getElementById("modalProducto").classList.remove("active");
+}
+
+document.getElementById("formProducto").addEventListener("submit",function(e){
+    e.preventDefault();
+
+    const nombre = document.getElementById("nombreProducto").value.trim();
+    const codigo = document.getElementById("codigoProducto").value.trim();
+    const departamento = document.getElementById("departamentoProducto").value.trim()
+        || "Sin departamento";
+    const costo = Number(document.getElementById("costoProducto").value);
+    const precio = Number(document.getElementById("precioProducto").value);
+    const stock = Number(document.getElementById("stockProducto").value);
+
+    if(!nombre){
+        alert("Escribe el nombre del producto.");
+        return;
+    }
+
+    if(!Number.isFinite(costo) || costo < 0 ||
+       !Number.isFinite(precio) || precio < 0){
+        alert("El costo y el precio deben ser números válidos y no negativos.");
+        return;
+    }
+
+    if(!Number.isInteger(stock) || stock < 0){
+        alert("La cantidad de inventario debe ser un número entero igual o mayor que cero.");
+        return;
+    }
+
+    cargarProductos();
+
+    if(codigo && productos.some(p =>
+        String(p.codigo || "").trim().toLowerCase() === codigo.toLowerCase()
+    )){
+        const confirmar = confirm(
+            "Ya existe un producto con este código. ¿Deseas agregarlo de todas formas?"
+        );
+
+        if(!confirmar) return;
+    }
+
+    const nuevoProducto = {
+        id:Date.now().toString(),
+        nombre,
+        codigo,
+        departamento,
+        costo,
+        precio,
+        stock
     };
 
-    // Mantener el campo stock sincronizado cuando existe.
-    if (Object.prototype.hasOwnProperty.call(original, "stock")) {
-      productos[indice].stock = stockNuevo;
+    const datosActualizados = [...leerProductos(),nuevoProducto];
+
+    if(!guardarProductos(datosActualizados)){
+        return;
     }
 
-    try {
-      guardarProductos(productos);
-    } catch (error) {
-      console.error(error);
-      mostrarToast("No se pudieron guardar los cambios.", true);
-      return;
+    cargarProductos();
+    soloBajoStock = false;
+    document.getElementById("buscar").value = "";
+
+    aplicarBusqueda();
+    cerrarFormulario();
+    this.reset();
+
+    alert("Producto agregado correctamente.");
+});
+
+document.getElementById("modalProducto").addEventListener("click",function(e){
+    if(e.target === this){
+        cerrarFormulario();
+    }
+});
+
+/* DESCARGAR CSV */
+function descargarInventario(){
+    if(!listaVisible.length){
+        alert("No hay productos para descargar con los filtros actuales.");
+        return;
     }
 
-    cerrarModal();
-    renderizarInventario();
-    mostrarToast("Existencias actualizadas: " + productoActual.nombre);
-    return;
-  }
+    const encabezados = [
+        "Producto","Departamento","Código",
+        "Costo unitario (RD$)","Precio de venta (RD$)",
+        "Stock","Total costo (RD$)","Total venta (RD$)","Estado"
+    ];
 
-  // Sin selección: revisar si ya existe por código o nombre.
-  const nombreNormalizado = nombre.toLowerCase();
-  const codigoNormalizado = codigo.toLowerCase();
-
-  const indiceExistente = productos.findIndex(item => {
-    const p = normalizarProducto(item);
-    const mismoCodigo = codigoNormalizado && p.codigo.toLowerCase() === codigoNormalizado;
-    const mismoNombre = p.nombre.toLowerCase() === nombreNormalizado;
-    return Boolean(mismoCodigo || mismoNombre);
-  });
-
-  if (indiceExistente !== -1) {
-    const original = productos[indiceExistente];
-    const existente = normalizarProducto(original, indiceExistente);
-    const stockNuevo = existente.stock + cantidad;
-
-    productos[indiceExistente] = {
-      ...original,
-      stock: stockNuevo
-    };
-
-    // Actualiza el campo de existencia que use el archivo original.
-    if ("existencia" in original) productos[indiceExistente].existencia = stockNuevo;
-    if ("cantidad" in original) productos[indiceExistente].cantidad = stockNuevo;
-    if ("inventario" in original) productos[indiceExistente].inventario = stockNuevo;
-
-    try {
-      guardarProductos(productos);
-    } catch (error) {
-      console.error(error);
-      mostrarToast("No se pudieron guardar los cambios.", true);
-      return;
+    function celdaCSV(valor){
+        let texto = String(valor ?? "");
+        if(/^[\s]*[=+\-@]/.test(texto)) texto = "'" + texto;
+        return '"' + texto.replace(/"/g,'""') + '"';
     }
 
-    cerrarModal();
-    renderizarInventario();
-    mostrarToast("Se sumaron las existencias de " + existente.nombre);
-    return;
-  }
+    const filas = listaVisible.map(p => [
+        p.nombre,
+        p.departamento,
+        p.codigo,
+        p.costo.toFixed(2),
+        p.precio.toFixed(2),
+        p.stock,
+        (p.costo * p.stock).toFixed(2),
+        (p.precio * p.stock).toFixed(2),
+        p.stock <= LIMITE_STOCK ? "Bajo stock" : "Disponible"
+    ]);
 
-  // Registrar producto nuevo.
-  const nuevoProducto = {
-    id: (globalThis.crypto && crypto.randomUUID)
-      ? crypto.randomUUID()
-      : String(Date.now()),
-    nombre,
-    codigo,
-    departamento,
-    costo,
-    precio,
-    stock: cantidad
-  };
+    const csv = "\uFEFF" +
+        [encabezados,...filas]
+        .map(fila => fila.map(celdaCSV).join(";"))
+        .join("\r\n");
 
-  productos.push(nuevoProducto);
+    const archivo = new Blob([csv],{type:"text/csv;charset=utf-8;"});
+    const url = URL.createObjectURL(archivo);
+    const enlace = document.createElement("a");
 
-  try {
-    guardarProductos(productos);
-  } catch (error) {
-    console.error(error);
-    mostrarToast("No se pudo guardar el producto.", true);
-    return;
-  }
+    enlace.href = url;
+    enlace.download = soloBajoStock
+        ? "inventario_bajo_stock.csv"
+        : "inventario.csv";
 
-  cerrarModal();
-  renderizarInventario();
-  mostrarToast("Producto nuevo agregado al inventario.");
+    document.body.appendChild(enlace);
+    enlace.click();
+    enlace.remove();
+
+    setTimeout(() => URL.revokeObjectURL(url),1000);
+}
+
+/* MENÚ */
+function toggleMenu(forzarEstado){
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("menuOverlay");
+    const icono = document.getElementById("menuIcon");
+    const boton = document.querySelector(".menu-toggle");
+
+    if(window.innerWidth <= 700){
+        const abrir = typeof forzarEstado === "boolean"
+            ? forzarEstado
+            : !sidebar.classList.contains("menu-visible");
+
+        sidebar.classList.toggle("menu-visible",abrir);
+        overlay.classList.toggle("active",abrir);
+        icono.className = abrir ? "fa-solid fa-xmark" : "fa-solid fa-bars";
+        boton.setAttribute("aria-expanded",String(abrir));
+    }else{
+        const abrir = typeof forzarEstado === "boolean"
+            ? forzarEstado
+            : document.body.classList.contains("menu-cerrado");
+
+        document.body.classList.toggle("menu-cerrado",!abrir);
+        icono.className = "fa-solid fa-bars";
+    }
+}
+
+function cerrarMenu(){
+    const sidebar = document.getElementById("sidebar");
+    sidebar.classList.remove("menu-visible");
+    document.getElementById("menuOverlay").classList.remove("active");
+    document.getElementById("menuIcon").className = "fa-solid fa-bars";
+    document.querySelector(".menu-toggle").setAttribute("aria-expanded","false");
+}
+
+function irA(pagina){
+    location.href = pagina;
+}
+
+document.addEventListener("keydown",e => {
+    if(e.key === "Escape"){
+        cerrarMenu();
+        cerrarFormulario();
+    }
 });
 
-/* ACCIONES DE LA TABLA */
-
-$("tablaInventario").addEventListener("click", evento => {
-  const boton = evento.target.closest("button[data-accion]");
-  if (!boton) return;
-
-  const indice = Number(boton.dataset.indice);
-  const original = leerProductosGuardados()[indice];
-
-  if (!original) {
-    mostrarToast("No se encontró el producto.", true);
-    renderizarInventario();
-    return;
-  }
-
-  const producto = normalizarProducto(original, indice);
-
-  if (boton.dataset.accion === "agregar") {
-    abrirModal();
-    productoElegido = producto;
-
-    $("nombreProducto").value = producto.nombre;
-    $("codigoProducto").value = producto.codigo;
-    $("departamentoProducto").value = producto.departamento;
-    $("costoProducto").value = producto.costo;
-    $("precioProducto").value = producto.precio;
-    $("stockActual").value = producto.stock;
-    $("productoSeleccionado").innerHTML =
-      '<i class="fa-solid fa-circle-check"></i> Producto seleccionado: <strong>' +
-      escaparHTML(producto.nombre) + '</strong>.';
-
-    $("productoSeleccionado").classList.add("show");
-    $("cantidadProducto").focus();
-    $("cantidadProducto").select();
-    return;
-  }
-
-  if (boton.dataset.accion === "editar") {
-    abrirModal();
-    productoElegido = producto;
-
-    $("nombreProducto").value = producto.nombre;
-    $("codigoProducto").value = producto.codigo;
-    $("departamentoProducto").value = producto.departamento;
-    $("costoProducto").value = producto.costo;
-    $("precioProducto").value = producto.precio;
-    $("stockActual").value = producto.stock;
-
-    $("productoSeleccionado").innerHTML =
-      '<i class="fa-solid fa-circle-check"></i> Editando: <strong>' +
-      escaparHTML(producto.nombre) + '</strong>.';
-
-    $("productoSeleccionado").classList.add("show");
-
-    // En el modo de edición, la cantidad representa las unidades que se sumarán.
-    mostrarToast("Modifica los datos y guarda. La cantidad se sumará al stock actual.");
-    $("costoProducto").focus();
-  }
+window.addEventListener("storage",e => {
+    if(e.key === STORAGE_KEY){
+        cargarProductos();
+        aplicarBusqueda();
+    }
 });
 
-/* EXPORTAR CSV */
-
-$("exportarBtn").addEventListener("click", () => {
-  const productos = obtenerProductos();
-
-  if (!productos.length) {
-    mostrarToast("No hay productos para exportar.", true);
-    return;
-  }
-
-  const encabezados = [
-    "Nombre", "Codigo", "Departamento", "Costo",
-    "Precio detalle", "Existencia", "Valor al costo"
-  ];
-
-  const filas = productos.map(p => [
-    p.nombre,
-    p.codigo,
-    p.departamento,
-    p.costo,
-    p.precio,
-    p.stock,
-    p.costo * p.stock
-  ]);
-
-  const csv = [encabezados, ...filas]
-    .map(fila => fila.map(valor => {
-      const texto = String(valor ?? "");
-      return '"' + texto.replace(/"/g, '""') + '"';
-    }).join(","))
-    .join("\r\n");
-
-  const blob = new Blob(["\uFEFF" + csv], {
-    type: "text/csv;charset=utf-8;"
-  });
-
-  const url = URL.createObjectURL(blob);
-  const enlace = document.createElement("a");
-  enlace.href = url;
-  enlace.download = "inventario.csv";
-  document.body.appendChild(enlace);
-  enlace.click();
-  enlace.remove();
-  URL.revokeObjectURL(url);
-
-  mostrarToast("Inventario exportado correctamente.");
+window.addEventListener("resize",() => {
+    if(window.innerWidth > 700){
+        cerrarMenu();
+    }
 });
 
-/* ACTUALIZACIÓN DESDE OTRAS PÁGINAS O PESTAÑAS */
-
-window.addEventListener("storage", evento => {
-  if (evento.key === CLAVE_PRODUCTOS) {
-    renderizarInventario();
-  }
-});
-
-/* INICIO */
-
-renderizarInventario();
+cargarProductos();
+aplicarBusqueda();
 </script>
+
 </body>
 </html>
